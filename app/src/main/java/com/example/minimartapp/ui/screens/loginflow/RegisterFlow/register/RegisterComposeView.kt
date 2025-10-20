@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.example.minimartapp.ui.screens.loginflow.LoginViewModel
 import com.example.minimartapp.ui.screens.loginflow.RegisterFlow.RegisterViewModel
 import com.example.minimartapp.ui.theme.DpSizes.dp16
 import com.example.minimartapp.ui.theme.DpSizes.dp24
@@ -49,14 +48,12 @@ fun RegisterComposeView(
     onNavigateBack: () -> Unit
 ) {
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
+        modifier = Modifier.fillMaxSize(), topBar = {
             TopBarComposeView("Register") {
 //add accion de regreso
                 onNavigateBack.invoke()
             }
-        }
-    ) { padding ->
+        }) { padding ->
         Surface(
             modifier = Modifier
                 .fillMaxSize()
@@ -96,7 +93,7 @@ fun RegisterComposeView(
                     placeholder = "+1(555)123-4567",
                     value = registerViewModel.phoneRegisterInput
                 ) { valueChange ->
-                   registerViewModel.phoneRegisterInput =  valueChange
+                    registerViewModel.phoneRegisterInput = valueChange
                 }
 
                 Spacer(modifier = Modifier.height(dp16))
@@ -108,7 +105,7 @@ fun RegisterComposeView(
                     isPassword = true,
                     value = registerViewModel.passwordRegisterInput
                 ) { valueChange ->
-                  registerViewModel.passwordRegisterInput = valueChange
+                    registerViewModel.passwordRegisterInput = valueChange
                 }
                 Spacer(modifier = Modifier.height(dp8))
                 PasswordValidationComposeView(isValid = false)
@@ -122,7 +119,7 @@ fun RegisterComposeView(
                     isPassword = true,
                     value = registerViewModel.confirmRegisterInput
                 ) { valueChange ->
-                  registerViewModel.confirmRegisterInput = valueChange
+                    registerViewModel.confirmRegisterInput = valueChange
                 }
                 Spacer(modifier = Modifier.height(dp16))
                 Row(
@@ -130,8 +127,7 @@ fun RegisterComposeView(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Checkbox(
-                        checked = registerViewModel.checkBoxIsCheck,
-                        onCheckedChange = {
+                        checked = registerViewModel.checkBoxIsCheck, onCheckedChange = {
                             registerViewModel.checkBoxIsCheck = it
                         })
                     Spacer(modifier = Modifier.width(dp4))
@@ -153,8 +149,7 @@ fun RegisterComposeView(
                         .padding(vertical = dp24),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
-                )
-                {
+                ) {
                     Text("Already have an account? ", style = TextStyleRobotoRegularSp14)
                     Spacer(modifier = Modifier.width(dp3))
                     Text(

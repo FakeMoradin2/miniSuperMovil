@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -48,7 +50,7 @@ fun LoginComposeView(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopBarComposeView("MiniMart"){
+            TopBarComposeView("MiniMart") {
                 onNavigateBack.invoke()
             }
         }
@@ -61,7 +63,8 @@ fun LoginComposeView(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(dp16),
+                    .padding(dp16)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text("Welcome back", style = textStyleRobotoBoldSp24)
@@ -103,9 +106,10 @@ fun LoginComposeView(
                             loginViewModel.checkBoxIsCheck = it
                         })
                     Spacer(modifier = Modifier.width(dp4))
-                    Text("Remember me",
+                    Text(
+                        "Remember me",
                         style = textStyleRobotoMediumSp12
-                        ) // agregar un stilo de letra
+                    ) // agregar un stilo de letra
                 }
                 Spacer(modifier = Modifier.height(dp16))
                 ButtonComposeView(
