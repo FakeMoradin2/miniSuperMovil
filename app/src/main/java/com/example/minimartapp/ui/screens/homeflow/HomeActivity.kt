@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import com.example.minimartapp.ui.screens.homeflow.navigation.HomeFlowNavHost
 import com.example.minimartapp.ui.theme.MiniMartAppTheme
 
+
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
