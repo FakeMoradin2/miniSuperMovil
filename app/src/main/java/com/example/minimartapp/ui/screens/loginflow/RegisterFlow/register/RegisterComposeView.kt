@@ -41,6 +41,7 @@ import com.example.minimartapp.ui.widgets.PasswordValidationComposeView
 import com.example.minimartapp.ui.widgets.TopBarComposeView
 import com.example.minimartapp.ui.widgets.TypesButtons
 
+
 @Composable
 fun RegisterComposeView(
     registerViewModel: RegisterViewModel = hiltViewModel(),
