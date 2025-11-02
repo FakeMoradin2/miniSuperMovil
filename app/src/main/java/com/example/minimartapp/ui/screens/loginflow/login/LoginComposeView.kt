@@ -1,5 +1,6 @@
 package com.example.minimartapp.ui.screens.loginflow.login
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,12 +18,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.minimartapp.R
+import com.example.minimartapp.datasource.comnom.ResponseStatus
+import com.example.minimartapp.datasource.requests.LoginRequest
+import com.example.minimartapp.domain.models.UserDataDomain
 import com.example.minimartapp.ui.screens.loginflow.LoginViewModel
 import com.example.minimartapp.ui.theme.DpSizes.dp16
 import com.example.minimartapp.ui.theme.DpSizes.dp24
@@ -46,6 +53,27 @@ fun LoginComposeView(
     onNavigateRegister: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
+    val state = loginViewModel.observerState.collectAsState()
+
+    when(state.value){
+        is ResponseStatus.Error<*> -> {
+            val  message = stringResource((state.value as ResponseStatus.Error<*>).message)
+            Log.e("ERROR", message )
+        }
+        is ResponseStatus.Loading<*> -> {
+            Log.e("LOADING", "LOADING")
+        }
+        is ResponseStatus.Success<*> -> {
+            val userName = (state.value as ResponseStatus.Success<UserDataDomain>).data.userName
+            val phone = (state.value as ResponseStatus.Success<UserDataDomain>).data.phone
+            val rol = (state.value as ResponseStatus.Success<UserDataDomain>).data.rol
+
+            Log.e("SUCCESS", userName )
+            Log.e("SUCCESS", phone )
+            Log.e("SUCCESS", rol )
+        }
+    }
+
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -116,7 +144,7 @@ fun LoginComposeView(
                     typesButtons = TypesButtons.Primary,
                     title = "Sign In",
                 ) {
-
+                    loginViewModel.fetchLogin()
                 }
 
                 Row(

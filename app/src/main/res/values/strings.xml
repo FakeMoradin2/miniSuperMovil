@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Mini Mart</string>
+    <string name="unknow_host_exepcion">Error en la red</string>
+    <string name="error_exepcion">No se pudo obtener la informacion</string>
 </resources>
