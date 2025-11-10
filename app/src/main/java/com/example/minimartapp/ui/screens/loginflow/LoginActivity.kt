@@ -1,5 +1,6 @@
 package com.example.minimartapp.ui.screens.loginflow
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,12 +11,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.minimartapp.ui.screens.homeflow.HomeActivity
 import com.example.minimartapp.ui.screens.loginflow.navigation.LoginFlowNavHost
 import com.example.minimartapp.ui.theme.MiniMartAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginActivity : ComponentActivity() {
+
+    fun navigateToHome() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish() // Opcional: cierra LoginActivity para que no vuelva atrás
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,10 +39,13 @@ class LoginActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(it)
                     ) {
-                        LoginFlowNavHost()
+                        LoginFlowNavHost(
+                            onNavigateToHome = { navigateToHome() }
+                        )
                     }
                 }
             }
         }
     }
 }
+

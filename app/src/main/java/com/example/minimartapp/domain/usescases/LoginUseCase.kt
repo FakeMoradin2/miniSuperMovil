@@ -13,3 +13,4 @@ class LoginUseCase @Inject constructor(private val loginTask: LoginTask) {
     }
 
 }
+

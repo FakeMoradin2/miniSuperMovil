@@ -39,7 +39,7 @@ fun UnboardingComposeView(
                 .clip(
                     RoundedCornerShape(150.dp)
                 )
-                .size(150.dp)
+                .size(100.dp)
 
         )
 

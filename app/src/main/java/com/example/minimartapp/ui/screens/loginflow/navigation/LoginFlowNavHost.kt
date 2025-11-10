@@ -4,18 +4,21 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.minimartapp.ui.screens.loginflow.PasswordFlow.RecoverPassword.RecoverPasswordComposeView
 import com.example.minimartapp.ui.screens.loginflow.RegisterFlow.register.RegisterComposeView
 import com.example.minimartapp.ui.screens.loginflow.login.LoginComposeView
 import com.example.minimartapp.ui.screens.loginflow.unboardingComposeView.UnboardingComposeView
 
 @Composable
-fun LoginFlowNavHost() {
+fun LoginFlowNavHost(
+    onNavigateToHome: () -> Unit
+) {
     val navcontroller = rememberNavController()
 
 
     NavHost(navController = navcontroller, startDestination = DestinationUnboarding) {
         composable<DestinationUnboarding> {
-            UnboardingComposeView (
+            UnboardingComposeView(
                 onNavigateLogin = {
                     navcontroller.navigate(DestinationLogin)
                 },
@@ -27,18 +30,35 @@ fun LoginFlowNavHost() {
         }
 
         composable<DestinationLogin> {
-            LoginComposeView (
+            LoginComposeView(
                 onNavigateRegister = {
                     navcontroller.navigate(DestinationRegister)
                 },
                 onNavigateBack = {
                     navcontroller.popBackStack()
+                },
+                onNavigateRecoverPassword = {
+                    navcontroller.navigate(DestinationRecoverPassword)
+                },
+                onNavigateToHome = {
+                    // Cuando el login es exitoso, navega a HomeActivity
+                    onNavigateToHome()
                 }
             )
         }
 
         composable<DestinationRegister> {
             RegisterComposeView(
+                onNavigateLogin = {
+                    navcontroller.navigate(DestinationLogin)
+                }
+            ) {
+                navcontroller.popBackStack()
+            }
+        }
+
+        composable<DestinationRecoverPassword> {
+            RecoverPasswordComposeView(
                 onNavigateLogin = {
                     navcontroller.navigate(DestinationLogin)
                 }

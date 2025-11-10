@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.protolite.well.known.types)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -83,7 +84,7 @@ dependencies {
     //dependencia de constrain Layoud
     implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
 
-    //launch
+
 
 
 

@@ -29,6 +29,14 @@ object Styles {
         fontWeight = FontWeight.Normal
     )
 
+    val textStyleRobotoRegularSp12 = TextStyle(
+        fontSize = 12.sp,
+        lineHeight = 12.sp,
+        fontFamily = robotoFontFamily,
+        fontWeight = FontWeight.Normal
+    )
+
+
     val textStyleRobotoMediumsp16 = TextStyle(
         fontSize = 16.sp,
         lineHeight = 16.sp,
@@ -52,6 +60,14 @@ object Styles {
         fontFamily = robotoFontFamily,
         fontWeight = FontWeight.Bold,
         color = Color.Black
+    )
+
+    val TersearyButtonStyle = TextStyle(
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        fontFamily = robotoFontFamily,
+        fontWeight = FontWeight.Bold,
+        color = Color(0xFF424242)
     )
 
     val TextStyleRobotoRegularSp14 = TextStyle(

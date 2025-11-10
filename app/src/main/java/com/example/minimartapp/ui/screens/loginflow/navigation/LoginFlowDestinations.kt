@@ -11,5 +11,6 @@ object DestinationRegister
 @Serializable
 object DestinationUnboarding
 
-
+@Serializable
+object DestinationRecoverPassword
 

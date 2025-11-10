@@ -38,12 +38,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.VerticalAlign
 import com.example.minimartapp.R
 import com.example.minimartapp.ui.theme.DpSizes.dp4
 import com.example.minimartapp.ui.theme.DpSizes.dp8
 import com.example.minimartapp.ui.theme.Styles.PrimaryButtonStyle
 import com.example.minimartapp.ui.theme.Styles.SecondaryButtonStyle
+import com.example.minimartapp.ui.theme.Styles.TersearyButtonStyle
 import com.example.minimartapp.ui.theme.Styles.textStyleRobotoMediumSp12
 import com.example.minimartapp.ui.theme.Styles.textStyleRobotoMediumsp16
 import com.example.minimartapp.ui.theme.Styles.textStyleRobotoRegularSp10
@@ -53,8 +57,60 @@ import com.example.minimartapp.ui.theme.Styles.textStyleRobotoSp12
 sealed class TypesButtons {
     data object Primary : TypesButtons()
     data object Secondary : TypesButtons()
+
+    data object Terseary : TypesButtons()
 }
 
+
+
+
+@Composable
+fun ButtonCategorieComposeView(
+    typesButtons: TypesButtons,
+    isEnable: Boolean = true,
+    title: String,
+    @DrawableRes icon: Int? = null,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(50.dp)) // forma ovalada
+            .border(
+                width = 1.dp,
+                color = getBorderButton(typesButtons),
+                shape = RoundedCornerShape(50.dp)
+            )
+            .background(
+                getBackgroundButton(typesButtons, isEnable),
+                shape = RoundedCornerShape(50.dp)
+            )
+            .clickable(onClick = { onClick.invoke() }, enabled = isEnable)
+            .padding(horizontal = 30.dp, vertical = 8.dp) // controla el alto/ancho
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            if (icon != null) {
+                Image(
+                    painter = painterResource(icon),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(18.dp)
+                        .padding(end = 6.dp)
+                )
+            }
+            Text(
+                text = title,
+                fontSize = 12.sp, style = getStyleButton(typesButtons),
+                maxLines = 1
+            )
+        }
+    }
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
 
 @Composable
 fun TopBarComposeView(
@@ -76,18 +132,7 @@ fun TopBarComposeView(
             }
         }
         Spacer(modifier = Modifier.width(dp4))
-        Image(
-            painter = painterResource(R.drawable.ic_logo),
-            null,
-            modifier = Modifier
-                .size(24.dp)
-                .clip(
-                    RoundedCornerShape(
-                        80.dp
-                    )
-                )
-        )
-        Spacer(modifier = Modifier.width(dp8))
+
         Text(titulo, style = textStyleRobotoMediumSp12)
     }
 }
@@ -114,6 +159,7 @@ fun InputTextFieldComposeView(
                 keyboardType = keyboardType
             ),
             value = value,
+            maxLines = 1,
             onValueChange = { onValueChange(it) },
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text(placeholder) },
@@ -186,6 +232,58 @@ fun ButtonComposeView(
     }
 }
 
+@Composable
+fun ButtonMenuComposeView(
+    typesButtons: TypesButtons,
+    isEnable: Boolean = true,
+    title: String,
+    @DrawableRes icon: Int? = null,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(10 .dp))
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp)
+            .clickable(onClick = { onClick.invoke() }, enabled = isEnable)
+            .height(40.dp)
+            .border(
+                width = 1.dp,
+                shape = RoundedCornerShape(10.dp),
+                color = getBorderButton(typesButtons)
+            )
+            .background(
+                getBackgroundButton(typesButtons, isEnable),
+                shape = RoundedCornerShape(10.dp)
+            )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start // Cambiado a Start
+        ) {
+            if (icon != null) {
+                Icon(
+                    painter = painterResource(icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+            }
+            Text(
+                text = title,
+                style = getStyleButton(typesButtons),
+                modifier = Modifier.weight(1f), // Para que el texto ocupe el espacio disponible
+                textAlign = TextAlign.Start // Alineación de texto al inicio
+            )
+        }
+    }
+}
+
+
+
 private fun getBackgroundButton(typesButtons: TypesButtons, isEnable: Boolean): Color {
     return when (typesButtons) {
         TypesButtons.Primary -> {
@@ -197,6 +295,11 @@ private fun getBackgroundButton(typesButtons: TypesButtons, isEnable: Boolean): 
             if (isEnable) Color.White
             else Color(0x2DE5E5E5)
         }
+
+        TypesButtons.Terseary -> {
+            if (isEnable) Color(0x1A000000)
+            else Color.White
+        }
     }
 }
 
@@ -204,6 +307,7 @@ private fun getStyleButton(typesButtons: TypesButtons): TextStyle {
     return when (typesButtons) {
         TypesButtons.Primary -> PrimaryButtonStyle
         TypesButtons.Secondary -> SecondaryButtonStyle
+        TypesButtons.Terseary -> TersearyButtonStyle
     }
 }
 
@@ -211,6 +315,7 @@ private fun getBorderButton(typesButtons: TypesButtons): Color {
     return when (typesButtons) {
         TypesButtons.Primary -> Color.Transparent
         TypesButtons.Secondary -> Color.LightGray
+        TypesButtons.Terseary -> Color.Transparent
     }
 }
 
@@ -252,3 +357,7 @@ fun DividerComposeView(text: String) {
         HorizontalDivider(thickness = 1.dp, modifier = Modifier.weight(1f))
     }
 }
+
+
+
+

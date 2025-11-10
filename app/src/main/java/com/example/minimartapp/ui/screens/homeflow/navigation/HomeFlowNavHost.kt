@@ -13,7 +13,7 @@ fun HomeFlowNavHost() {
 
     NavHost(navController = navcontroller, startDestination = DestinationHome) {
         composable<DestinationHome> {
-           HomeComposeView(myList = emptyList())
+           HomeComposeView()
 
         }
     }

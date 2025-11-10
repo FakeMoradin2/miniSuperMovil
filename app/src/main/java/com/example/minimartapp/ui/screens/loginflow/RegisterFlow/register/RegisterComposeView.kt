@@ -1,5 +1,6 @@
 package com.example.minimartapp.ui.screens.loginflow.RegisterFlow.register
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,8 +10,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Scaffold
@@ -19,10 +22,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.minimartapp.R
 import com.example.minimartapp.ui.screens.loginflow.RegisterFlow.RegisterViewModel
 import com.example.minimartapp.ui.theme.DpSizes.dp16
 import com.example.minimartapp.ui.theme.DpSizes.dp24
@@ -50,15 +57,12 @@ fun RegisterComposeView(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(), topBar = {
-            TopBarComposeView("Register") {
+            TopBarComposeView("") {
 //add accion de regreso
                 onNavigateBack.invoke()
             }
         }) { padding ->
         Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
         ) {
             Column(
                 modifier = Modifier
@@ -68,12 +72,25 @@ fun RegisterComposeView(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Text("Create your account", style = textStyleRobotoBoldSp24)
+                Image(
+                    painter = painterResource(R.drawable.ic_logo),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(150.dp))
+                        .size(100.dp)
+                )
+
+                Spacer(modifier = Modifier.height(dp24))
+
+                Text("Create your account",
+                    style = textStyleRobotoBoldSp24,
+                    color = Color(0xFF2C3E50))
                 Spacer(modifier = Modifier.height(dp8))
                 Text(
                     "Start shopping fresh groceries delivered to your door",
                     style = textStyleRobotoRegularSp16,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = Color(0xFF5A6C7D)
                 )
                 Spacer(modifier = Modifier.height(dp28))
 

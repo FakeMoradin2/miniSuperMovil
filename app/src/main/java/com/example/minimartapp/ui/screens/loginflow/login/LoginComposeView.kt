@@ -1,6 +1,7 @@
 package com.example.minimartapp.ui.screens.loginflow.login
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,8 +11,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Scaffold
@@ -21,14 +24,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.minimartapp.R
 import com.example.minimartapp.datasource.comnom.ResponseStatus
-import com.example.minimartapp.datasource.requests.LoginRequest
 import com.example.minimartapp.domain.models.UserDataDomain
 import com.example.minimartapp.ui.screens.loginflow.LoginViewModel
 import com.example.minimartapp.ui.theme.DpSizes.dp16
@@ -51,26 +57,32 @@ import com.example.minimartapp.ui.widgets.TypesButtons
 fun LoginComposeView(
     loginViewModel: LoginViewModel = hiltViewModel(),
     onNavigateRegister: () -> Unit,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    onNavigateRecoverPassword: () -> Unit,
+    onNavigateToHome: () -> Unit
+    //------------
 ) {
     val state = loginViewModel.observerState.collectAsState()
+    val context = LocalContext.current
 
-    when(state.value){
+    when (state.value) {
         is ResponseStatus.Error<*> -> {
-            val  message = stringResource((state.value as ResponseStatus.Error<*>).message)
-            Log.e("ERROR", message )
+            val message = stringResource((state.value as ResponseStatus.Error<*>).message)
+            Log.e("ERROR", message)
         }
+
         is ResponseStatus.Loading<*> -> {
             Log.e("LOADING", "LOADING")
         }
+
         is ResponseStatus.Success<*> -> {
             val userName = (state.value as ResponseStatus.Success<UserDataDomain>).data.userName
             val phone = (state.value as ResponseStatus.Success<UserDataDomain>).data.phone
             val rol = (state.value as ResponseStatus.Success<UserDataDomain>).data.rol
 
-            Log.e("SUCCESS", userName )
-            Log.e("SUCCESS", phone )
-            Log.e("SUCCESS", rol )
+            Log.e("SUCCESS", userName)
+            Log.e("SUCCESS", phone)
+            Log.e("SUCCESS", rol)
         }
     }
 
@@ -78,16 +90,15 @@ fun LoginComposeView(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopBarComposeView("MiniMart") {
+            TopBarComposeView("") {
                 onNavigateBack.invoke()
             }
         }
     ) { padding ->
         Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
+
         ) {
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -95,13 +106,28 @@ fun LoginComposeView(
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Welcome back", style = textStyleRobotoBoldSp24)
+                Image(
+                    painter = painterResource(R.drawable.ic_logo),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(150.dp))
+                        .size(100.dp)
+                )
+
+                Spacer(modifier = Modifier.height(dp24))
+
+                Text(
+                    "Welcome back", style = textStyleRobotoBoldSp24,
+                    color = Color(0xFF2C3E50)
+                )
                 Spacer(modifier = Modifier.height(dp30))
                 Text(
                     "Sign to your account to continue shopping",
                     style = textStyleRobotoRegularSp16,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = Color(0xFF5A6C7D)
                 )
+
                 Spacer(modifier = Modifier.height(dp28))
                 InputTextFieldComposeView(
                     modifier = Modifier.fillMaxWidth(),
@@ -145,8 +171,23 @@ fun LoginComposeView(
                     title = "Sign In",
                 ) {
                     loginViewModel.fetchLogin()
+                    onNavigateToHome.invoke()
                 }
+                Spacer(modifier = Modifier.height(dp16))
 
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = "¿Forgot your password?",
+                        style = textStyleRobotoMediumSp12,
+                        color = Color(0xFF64B5F6),
+                        modifier = Modifier.clickable
+                        {
+                            onNavigateRecoverPassword.invoke()
+                        }
+                    )
+                }
+                Spacer(modifier = Modifier.height(80.dp))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -158,7 +199,7 @@ fun LoginComposeView(
                     Text("Don't have a account? ", style = TextStyleRobotoRegularSp14)
                     Spacer(modifier = Modifier.width(dp3))
                     Text(
-                        "Sign up",
+                        text = "Sign up",
                         style = TextStyleRobotoRMediumSp14,
                         color = Color(0xFF64B5F6),
                         modifier = Modifier.clickable(enabled = true, onClick = {

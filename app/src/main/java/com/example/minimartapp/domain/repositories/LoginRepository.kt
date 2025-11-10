@@ -5,7 +5,6 @@ import com.example.minimartapp.datasource.comnom.ResponseStatus
 import com.example.minimartapp.datasource.comnom.makeNetworkCall
 import com.example.minimartapp.datasource.data.fakecontrast
 import com.example.minimartapp.datasource.requests.LoginRequest
-import com.example.minimartapp.datasource.responses.LoginResponse
 import com.example.minimartapp.domain.mappers.UserDtoMapper.Companion.fromDtoDomain
 import com.example.minimartapp.domain.models.UserDataDomain
 import kotlinx.coroutines.Dispatchers
@@ -19,12 +18,9 @@ interface LoginTask {
 }
 
 
-
-
-
 class LoginRepository @Inject constructor(private val fakecontrast: fakecontrast) : LoginTask{
-    override suspend fun fetchLogin(loginRequest: LoginRequest): ResponseStatus<UserDataDomain> {
 
+    override suspend fun fetchLogin(loginRequest: LoginRequest): ResponseStatus<UserDataDomain> {
         return withContext(Dispatchers.IO){
             val loginDeferred = async { getLoginDeferred(loginRequest) }
             val LoginResponse = loginDeferred.await()
@@ -39,7 +35,6 @@ class LoginRepository @Inject constructor(private val fakecontrast: fakecontrast
             }
 
         }
-
     }
 
     private suspend fun getLoginDeferred(loginRequest: LoginRequest): ResponseStatus<UserDataDomain> =

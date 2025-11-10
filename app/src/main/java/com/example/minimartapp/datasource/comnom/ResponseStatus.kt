@@ -5,3 +5,4 @@ sealed class ResponseStatus <T> {
     class Loading <T> : ResponseStatus<T>()
     class Error <T>(val message: Int): ResponseStatus<T>()
 }
+

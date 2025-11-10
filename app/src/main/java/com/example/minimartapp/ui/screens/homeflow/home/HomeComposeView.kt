@@ -1,213 +1,235 @@
 package com.example.minimartapp.ui.screens.homeflow.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import coil3.compose.AsyncImage
+import androidx.compose.ui.unit.dp
 import com.example.minimartapp.R
-import com.example.minimartapp.ui.theme.DpSizes.dp1
-import com.example.minimartapp.ui.theme.DpSizes.dp100
-import com.example.minimartapp.ui.theme.DpSizes.dp16
-import com.example.minimartapp.ui.theme.DpSizes.dp8
-import com.example.minimartapp.ui.theme.DpSizes.dp80
 import com.example.minimartapp.ui.theme.Styles.textStyleRobotoBoldSp24
-import com.example.minimartapp.ui.theme.Styles.textStyleRobotoThinSp10
-import com.example.minimartapp.ui.theme.Styles.textStyleRobotobOLDSp10
-import com.example.minimartapp.ui.widgets.DividerComposeView
-import com.example.minimartapp.ui.widgets.TopBarComposeView
+import com.example.minimartapp.ui.theme.Styles.textStyleRobotoMediumSp35
+import com.example.minimartapp.ui.theme.Styles.textStyleRobotoRegularSp12
+import com.example.minimartapp.ui.widgets.ButtonCategorieComposeView
+import com.example.minimartapp.ui.widgets.ButtonMenuComposeView
+import com.example.minimartapp.ui.widgets.TypesButtons
 
-data class ModelProducts(
-    val img: Int,
-    val name: String,
-    val stock: Int,
-    val price: Double
-)
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeComposeView(
-    myList: List<ModelProducts>
 ) {
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
     Scaffold(
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                icon = { Icon(Icons.Filled.Menu, contentDescription = "") },
+                text = { Text("") },
+                onClick = {
+                    showBottomSheet = true
+                }
+            )
+        },
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                TopBarComposeView("Welcome John Doe")
-                Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = {}) {
-                    Image(painter = painterResource(R.drawable.ic_car), null)
-                }
-            }
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
-                Image(painterResource(R.drawable.ic_add), null)
-            }
-        }) { padding ->
+            TopAppBar(
+                expandedHeight = 100.dp,
+                actions = {
+                    Row() {
+                        Icon(
+                            modifier = Modifier.offset(y = (-40).dp),
+                            painter = painterResource(R.drawable.ic_search),
+                            contentDescription = null,
+                            tint = Color.White,
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Icon(
+                            modifier = Modifier.offset(y = (-40).dp),
+                            painter = painterResource(R.drawable.ic_car),
+                            contentDescription = null,
+                            tint = Color.White,
+
+                            )
+                        Spacer(modifier = Modifier.width(20.dp))
+                    }
+                },
+                title = {
+                    Column {
+                        Spacer(modifier = Modifier.height(30.dp))
+                        Text(
+                            "Welcome!",
+                            style = textStyleRobotoMediumSp35
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            "Explore,enjoy,and make the most of the app",
+                            style = textStyleRobotoRegularSp12
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF64B5F6),
+                    titleContentColor = Color.White
+                )
+            )
+        }
+
+    ) { padding ->
         Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(dp16)
+                    .padding(6.dp)
                     .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.Start
             ) {
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    "Products on sale",
+                    text = "Categories",
                     style = textStyleRobotoBoldSp24,
-                    textAlign = TextAlign.Center
+                    color = Color(0xFF64B5F6),
                 )
-                Spacer(modifier = Modifier.height(dp16))
+                Spacer(modifier = Modifier.height(10.dp))
+                Divider(
+                    color = Color.LightGray,
+                    thickness = 1.dp
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    repeat(myList.size) {
-                        Column(
-                            modifier = Modifier.width(dp100),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            AsyncImage(
-                                model = myList.get(it).img,
-                                contentDescription = "Azúcar",
-                                contentScale = ContentScale.Crop,
-                            )
-                            Text(
-                                myList.get(it).name, style = textStyleRobotoThinSp10, color = Color(
-                                    0xFF176589
-                                )
-                            )
-                            Row(modifier = Modifier.fillMaxWidth()) {
-                                Text("Price: ", style = textStyleRobotoThinSp10)
-                                Text("$${myList.get(it).price}", style = textStyleRobotobOLDSp10)
-                            }
-                            Row(modifier = Modifier.fillMaxWidth()) {
-                                Text("Stock: ", style = textStyleRobotoThinSp10)
-                                Text("${myList.get(it).stock}", style = textStyleRobotobOLDSp10)
-                            }
-                        }
+
+                    Spacer(modifier = Modifier.width(10.dp))
+                    ButtonCategorieComposeView(
+                        typesButtons = TypesButtons.Primary,
+                        title = "All",
+                    ) {
+
                     }
+
+                    Spacer(modifier = Modifier.width(6.dp))
+                    ButtonCategorieComposeView(
+                        typesButtons = TypesButtons.Secondary,
+                        title = "Dairy"
+                    ) {
+
+                    }
+
+                    Spacer(modifier = Modifier.width(6.dp))
+                    ButtonCategorieComposeView(
+                        typesButtons = TypesButtons.Secondary,
+                        title = "Bakery",
+                    ) {
+
+                    }
+
+                    Spacer(modifier = Modifier.width(6.dp))
+                    ButtonCategorieComposeView(
+                        typesButtons = TypesButtons.Secondary,
+                        title = "Drinks",
+                    ) {}
+
                 }
-                Spacer(modifier = Modifier.height(dp16))
-                DividerComposeView(text = "All products")
-                Spacer(modifier = Modifier.height(dp16))
-                Card(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(), colors = CardDefaults.cardColors(
-                        containerColor = Color(0xCCECEBEB)
-                    )
-                ) {
-                    repeat(myList.size) {
-                        Column(
-                            modifier = Modifier.padding(dp16),
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
+                Spacer(modifier = Modifier.height(20.dp))
+
+
+
+
+
+
+
+
+
+                if (showBottomSheet) {
+                    ModalBottomSheet(
+                        onDismissRequest = {
+                            showBottomSheet = false
+                        },
+                        sheetState = sheetState,
+                        containerColor = Color(0xFFF2F2F7)
+                    ) {
+                        Text(
+                            text = "Menu",
+                            style = textStyleRobotoBoldSp24,
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Sheet content
+                        ButtonMenuComposeView(
+                            typesButtons = TypesButtons.Terseary,
+                            title = "My account",
+                            icon = R.drawable.ic_account
                             ) {
-                                Image(
-                                    painter = painterResource(myList.get(it).img),
-                                    null,
-                                    modifier = Modifier.size(dp80),
-                                    contentScale = ContentScale.Crop,
-                                )
-                                Column {
-                                    Row(modifier = Modifier) {
-                                        Text("Price: ", style = textStyleRobotoThinSp10)
-                                        Text(
-                                            "$${myList.get(it).price}",
-                                            style = textStyleRobotobOLDSp10
-                                        )
-                                    }
-                                    Row(modifier = Modifier) {
-                                        Text("Stock: ", style = textStyleRobotoThinSp10)
-                                        Text(
-                                            "${myList.get(it).stock}",
-                                            style = textStyleRobotobOLDSp10
-                                        )
-                                    }
-                                }
-                                Spacer(modifier = Modifier.weight(1f))
-                                IconButton(onClick = {}) {
-                                    Image(painter = painterResource(R.drawable.ic_shopping), null)
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(dp8))
-                            HorizontalDivider(thickness = dp1, modifier = Modifier.fillMaxWidth())
                         }
-                    }
-                    repeat(myList.size) {
-                        Column(
-                            modifier = Modifier.padding(dp16),
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        ButtonMenuComposeView(
+                            typesButtons = TypesButtons.Terseary,
+                            title = "Order History",
+                            icon = R.drawable.ic_history
                             ) {
-                                Image(
-                                    painter = painterResource(myList.get(it).img),
-                                    null,
-                                    modifier = Modifier.size(dp80),
-                                    contentScale = ContentScale.Crop,
-                                )
-                                Column {
-                                    Row(modifier = Modifier) {
-                                        Text("Price: ", style = textStyleRobotoThinSp10)
-                                        Text(
-                                            "$${myList.get(it).price}",
-                                            style = textStyleRobotobOLDSp10
-                                        )
-                                    }
-                                    Row(modifier = Modifier) {
-                                        Text("Stock: ", style = textStyleRobotoThinSp10)
-                                        Text(
-                                            "${myList.get(it).stock}",
-                                            style = textStyleRobotobOLDSp10
-                                        )
-                                    }
-                                }
-                                Spacer(modifier = Modifier.weight(1f))
-                                IconButton(onClick = {}) {
-                                    Image(painter = painterResource(R.drawable.ic_shopping), null)
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(dp8))
-                            HorizontalDivider(thickness = dp1, modifier = Modifier.fillMaxWidth())
                         }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        ButtonMenuComposeView(
+                            typesButtons = TypesButtons.Terseary,
+                            title = "Setting",
+                            icon = R.drawable.ic_settings
+                            ) {
+                        }
+                        Spacer(modifier = Modifier.height(30.dp))
+
+                        ButtonMenuComposeView(
+                            typesButtons = TypesButtons.Terseary,
+                            title = "Help",
+                            icon = R.drawable.ic_help
+                            ) {
+
+                        }
+
                     }
                 }
             }
+
         }
     }
 }
