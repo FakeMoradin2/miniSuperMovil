@@ -20,6 +20,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,8 +57,10 @@ import com.example.minimartapp.ui.widgets.TypesButtons
 fun RegisterComposeView(
     registerViewModel: RegisterViewModel = hiltViewModel(),
     onNavigateLogin: () -> Unit,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
 ) {
+
+
     Scaffold(
         modifier = Modifier.fillMaxSize(), topBar = {
             TopBarComposeView("") {
@@ -82,9 +88,11 @@ fun RegisterComposeView(
 
                 Spacer(modifier = Modifier.height(dp24))
 
-                Text("Create your account",
+                Text(
+                    "Create your account",
                     style = textStyleRobotoBoldSp24,
-                    color = Color(0xFF2C3E50))
+                    color = Color(0xFF2C3E50)
+                )
                 Spacer(modifier = Modifier.height(dp8))
                 Text(
                     "Start shopping fresh groceries delivered to your door",
@@ -147,7 +155,8 @@ fun RegisterComposeView(
                     Checkbox(
                         checked = registerViewModel.checkBoxIsCheck, onCheckedChange = {
                             registerViewModel.checkBoxIsCheck = it
-                        })
+                        }
+                    )
                     Spacer(modifier = Modifier.width(dp4))
                     Text(
                         "I gree to the Terms of Service and Privacy Policy ",
@@ -158,6 +167,7 @@ fun RegisterComposeView(
                 ButtonComposeView(
                     typesButtons = TypesButtons.Primary,
                     title = "Create Account",
+
                 ) {
 
                 }

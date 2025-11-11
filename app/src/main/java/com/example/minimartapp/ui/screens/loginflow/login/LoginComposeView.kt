@@ -59,7 +59,7 @@ fun LoginComposeView(
     onNavigateRegister: () -> Unit,
     onNavigateBack: () -> Unit,
     onNavigateRecoverPassword: () -> Unit,
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
     //------------
 ) {
     val state = loginViewModel.observerState.collectAsState()
@@ -95,118 +95,115 @@ fun LoginComposeView(
             }
         }
     ) { padding ->
-        Surface(
 
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(dp16)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            Column(
+            Image(
+                painter = painterResource(R.drawable.ic_logo),
+                contentDescription = null,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(dp16)
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .clip(RoundedCornerShape(150.dp))
+                    .size(100.dp)
+            )
+
+            Spacer(modifier = Modifier.height(dp24))
+
+            Text(
+                "Welcome back", style = textStyleRobotoBoldSp24,
+                color = Color(0xFF2C3E50)
+            )
+            Spacer(modifier = Modifier.height(dp30))
+            Text(
+                "Sign to your account to continue shopping",
+                style = textStyleRobotoRegularSp16,
+                textAlign = TextAlign.Center,
+                color = Color(0xFF5A6C7D)
+            )
+
+            Spacer(modifier = Modifier.height(dp28))
+            InputTextFieldComposeView(
+                modifier = Modifier.fillMaxWidth(),
+                label = "Username",
+                placeholder = "Enter your Username",
+                value = loginViewModel.nameLoginInput,
+            ) { valueChange ->
+                loginViewModel.nameLoginInput = valueChange
+            }
+
+            Spacer(modifier = Modifier.height(dp16))
+            InputTextFieldComposeView(
+                keyboardType = KeyboardType.Password,
+                modifier = Modifier.fillMaxWidth(),
+                label = "Password",
+                placeholder = "Enter your Password",
+                isPassword = true,
+                value = loginViewModel.passwordLoginInput,
+            ) { valueChange ->
+                loginViewModel.passwordLoginInput = valueChange
+            }
+            Spacer(modifier = Modifier.height(dp16))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_logo),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(150.dp))
-                        .size(100.dp)
-                )
-
-                Spacer(modifier = Modifier.height(dp24))
-
+                Checkbox(
+                    checked = loginViewModel.checkBoxIsCheck,
+                    onCheckedChange = {
+                        loginViewModel.checkBoxIsCheck = it
+                    })
+                Spacer(modifier = Modifier.width(dp4))
                 Text(
-                    "Welcome back", style = textStyleRobotoBoldSp24,
-                    color = Color(0xFF2C3E50)
-                )
-                Spacer(modifier = Modifier.height(dp30))
+                    "Remember me",
+                    style = textStyleRobotoMediumSp12
+                ) // agregar un stilo de letra
+            }
+            Spacer(modifier = Modifier.height(dp16))
+            ButtonComposeView(
+                typesButtons = TypesButtons.Primary,
+                title = "Sign In",
+            ) {
+                loginViewModel.fetchLogin()
+                onNavigateToHome.invoke()
+            }
+            Spacer(modifier = Modifier.height(dp16))
+
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    "Sign to your account to continue shopping",
-                    style = textStyleRobotoRegularSp16,
-                    textAlign = TextAlign.Center,
-                    color = Color(0xFF5A6C7D)
+                    text = "¿Forgot your password?",
+                    style = textStyleRobotoMediumSp12,
+                    color = Color(0xFF64B5F6),
+                    modifier = Modifier.clickable
+                    {
+                        onNavigateRecoverPassword.invoke()
+                    }
                 )
-
-                Spacer(modifier = Modifier.height(dp28))
-                InputTextFieldComposeView(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "Username",
-                    placeholder = "Enter your Username",
-                    value = loginViewModel.nameLoginInput,
-                ) { valueChange ->
-                    loginViewModel.nameLoginInput = valueChange
-                }
-
-                Spacer(modifier = Modifier.height(dp16))
-                InputTextFieldComposeView(
-                    keyboardType = KeyboardType.Password,
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "Password",
-                    placeholder = "Enter your Password",
-                    isPassword = true,
-                    value = loginViewModel.passwordLoginInput,
-                ) { valueChange ->
-                    loginViewModel.passwordLoginInput = valueChange
-                }
-                Spacer(modifier = Modifier.height(dp16))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(
-                        checked = loginViewModel.checkBoxIsCheck,
-                        onCheckedChange = {
-                            loginViewModel.checkBoxIsCheck = it
-                        })
-                    Spacer(modifier = Modifier.width(dp4))
-                    Text(
-                        "Remember me",
-                        style = textStyleRobotoMediumSp12
-                    ) // agregar un stilo de letra
-                }
-                Spacer(modifier = Modifier.height(dp16))
-                ButtonComposeView(
-                    typesButtons = TypesButtons.Primary,
-                    title = "Sign In",
-                ) {
-                    loginViewModel.fetchLogin()
-                    onNavigateToHome.invoke()
-                }
-                Spacer(modifier = Modifier.height(dp16))
-
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = "¿Forgot your password?",
-                        style = textStyleRobotoMediumSp12,
-                        color = Color(0xFF64B5F6),
-                        modifier = Modifier.clickable
-                        {
-                            onNavigateRecoverPassword.invoke()
-                        }
-                    )
-                }
-                Spacer(modifier = Modifier.height(80.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = dp24),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+            }
+            Spacer(modifier = Modifier.height(120.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = dp24),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            )
+            {
+                Text("Don't have a account? ", style = TextStyleRobotoRegularSp14)
+                Spacer(modifier = Modifier.width(dp3))
+                Text(
+                    text = "Sign up",
+                    style = TextStyleRobotoRMediumSp14,
+                    color = Color(0xFF64B5F6),
+                    modifier = Modifier.clickable(enabled = true, onClick = {
+                        onNavigateRegister.invoke()
+                    })
                 )
-                {
-                    Text("Don't have a account? ", style = TextStyleRobotoRegularSp14)
-                    Spacer(modifier = Modifier.width(dp3))
-                    Text(
-                        text = "Sign up",
-                        style = TextStyleRobotoRMediumSp14,
-                        color = Color(0xFF64B5F6),
-                        modifier = Modifier.clickable(enabled = true, onClick = {
-                            onNavigateRegister.invoke()
-                        })
-                    )
-                }
             }
         }
     }

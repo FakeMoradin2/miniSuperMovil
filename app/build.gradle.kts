@@ -60,6 +60,8 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.protolite.well.known.types)
+    implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.play.services.analytics.impl)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -84,6 +86,9 @@ dependencies {
     //dependencia de constrain Layoud
     implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
 
+
+    //lottie
+    implementation(libs.lottie.compose)
 
 
 

@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,15 +35,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.VerticalAlign
+import coil3.compose.AsyncImage
 import com.example.minimartapp.R
 import com.example.minimartapp.ui.theme.DpSizes.dp4
 import com.example.minimartapp.ui.theme.DpSizes.dp8
@@ -61,6 +65,90 @@ sealed class TypesButtons {
     data object Terseary : TypesButtons()
 }
 
+@Composable
+fun ProductCardComposeView(
+    modifier: Modifier = Modifier,
+    productName: String,
+    price: String,
+    stock: Int,
+    icon: Int?,
+    onAddClick: @Composable () -> Unit
+) {
+    Card(
+        modifier = modifier
+            .width(10.dp)
+            .padding(4.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            // Imagen del producto
+            if (icon != null) {
+                AsyncImage(
+                    model = icon,
+                    contentDescription = productName,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(4.dp),
+                    contentScale = ContentScale.Fit
+                )
+            } else {
+
+                androidx.compose.foundation.Image(
+                    painter = painterResource(R.drawable.ic_logo),
+                    contentDescription = productName,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(4.dp),
+                    contentScale = ContentScale.Fit
+                )
+            }
+            // Nombre del producto
+            Text(
+                text = productName,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            // Precio
+            Text(
+                text = "$$price",
+                fontSize = 13.sp,
+                color = Color(0xFF00897B)
+            )
+
+            // Stock
+            Text(
+                text = "Stock: $stock",
+                fontSize = 12.sp,
+                color = when {
+                    stock == 0 -> Color(0xFFD50000)        // Rojo - Sin stock
+                    stock <= 5 -> Color(0xFFFF9800)        // Amarillo/Naranja - Stock bajo (1-5)
+                    else -> Color(0xFF00C853)              // Verde - Stock normal (6+)
+                }
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            // Botón "Add"
+
+            ButtonCategorieComposeView(
+                typesButtons = TypesButtons.Primary,
+                isEnable = stock > 0,
+                title = "Add",
+                onClick = {
+                }
+            )
+        }
+    }
+}
 
 
 
@@ -70,7 +158,7 @@ fun ButtonCategorieComposeView(
     isEnable: Boolean = true,
     title: String,
     @DrawableRes icon: Int? = null,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -114,7 +202,7 @@ fun ButtonCategorieComposeView(
 
 @Composable
 fun TopBarComposeView(
-    titulo: String, onClickBack: (() -> Unit)? = null //parametro y a su vez una funcion
+    titulo: String, onClickBack: (() -> Unit)? = null, //parametro y a su vez una funcion
 ) {
     Row(
         modifier = Modifier
@@ -146,7 +234,7 @@ fun InputTextFieldComposeView(
     placeholder: String,
     isPassword: Boolean = false,
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
 ) {
     Column(modifier = modifier) {
         Text(label, style = textStyleRobotoMediumsp16)
@@ -198,7 +286,7 @@ fun ButtonComposeView(
     isEnable: Boolean = true,
     title: String,
     @DrawableRes icon: Int? = null,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -238,13 +326,13 @@ fun ButtonMenuComposeView(
     isEnable: Boolean = true,
     title: String,
     @DrawableRes icon: Int? = null,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(10 .dp))
-            .fillMaxWidth()
             .padding(horizontal = 10.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .fillMaxWidth()
             .clickable(onClick = { onClick.invoke() }, enabled = isEnable)
             .height(40.dp)
             .border(
@@ -281,7 +369,6 @@ fun ButtonMenuComposeView(
         }
     }
 }
-
 
 
 private fun getBackgroundButton(typesButtons: TypesButtons, isEnable: Boolean): Color {
