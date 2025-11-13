@@ -1,5 +1,6 @@
 package com.example.minimartapp.ui.screens.homeflow.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,13 +17,16 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -40,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.example.minimartapp.R
 import com.example.minimartapp.ui.theme.Styles.textStyleRobotoBoldSp24
 import com.example.minimartapp.ui.theme.Styles.textStyleRobotoMediumSp35
+import com.example.minimartapp.ui.theme.Styles.textStyleRobotoRegularSp10
 import com.example.minimartapp.ui.theme.Styles.textStyleRobotoRegularSp12
 import com.example.minimartapp.ui.widgets.ButtonCategorieComposeView
 import com.example.minimartapp.ui.widgets.ButtonMenuComposeView
@@ -55,7 +60,7 @@ fun HomeComposeView() {
     // Estado para controlar la barra de búsqueda
     var showSearchBar by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
-    var active by remember { mutableStateOf(false) }
+
 
     // Lista de productos con información diferente
     var products by remember {
@@ -263,24 +268,80 @@ fun HomeComposeView() {
             TopAppBar(
                 expandedHeight = 100.dp,
                 actions = {
-                    Row {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Barra de búsqueda que aparece al lado del icono
+                        if (showSearchBar) {
+                            SearchBar(
+                                query = searchText,
+                                onQueryChange = { searchText = it },
+                                onSearch = { },
+                                active = false,
+                                onActiveChange = { },
+                                modifier = Modifier
+                                    .width(280.dp)
+                                    .height(50.dp)
+                                    .offset(y = (-30).dp), // Ajuste menor para mejor alineación
+                                placeholder = {
+                                    Text(
+                                        "Buscar productos...",
+                                        style = textStyleRobotoRegularSp10
+                                    )
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_search),
+                                        contentDescription = "Search",
+                                        tint = Color.Gray
+                                    )
+                                },
+                                trailingIcon = {
+                                    Row {
+                                        if (searchText.isNotEmpty()) {
+                                            IconButton(
+                                                onClick = { searchText = "" }
+                                            ) {
+                                                Icon(
+                                                    Icons.Default.Close,
+                                                    contentDescription = "Clear search",
+                                                    tint = Color.Gray
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            ) {
+                            }
+                            Spacer(modifier = Modifier.width(12.dp))
+                        } else {
+                            // Icono de búsqueda normal cuando la barra no está visible
+                            Icon(
+                                modifier = Modifier
+                                    .offset(y = (-30).dp)
+                                    .clickable {
+                                        showSearchBar = true
+                                    },
+                                painter = painterResource(R.drawable.ic_search),
+                                contentDescription = "Search",
+                                tint = Color.White,
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                        }
+
+                        // Icono del carrito (siempre visible)
                         Icon(
-                            modifier = Modifier.offset(y = (-40).dp),
-                            painter = painterResource(R.drawable.ic_search),
-                            contentDescription = "Search",
-                            tint = Color.White,
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Icon(
-                            modifier = Modifier.offset(y = (-40).dp),
+                            modifier = Modifier.offset(y = (-30).dp),
                             painter = painterResource(R.drawable.ic_car),
                             contentDescription = "Cart",
                             tint = Color.White,
                         )
-                        Spacer(modifier = Modifier.width(20.dp))
+                        Spacer(modifier = Modifier.width(16.dp))
                     }
                 },
+
                 title = {
+                    Spacer(modifier = Modifier.width(16.dp))
                     Column {
                         Spacer(modifier = Modifier.height(30.dp))
                         Text(
@@ -300,6 +361,8 @@ fun HomeComposeView() {
                 )
             )
         }
+
+
     ) { padding ->
         Column(
             modifier = Modifier
@@ -388,24 +451,49 @@ fun HomeComposeView() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Grid de productos con información única para cada uno
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(120.dp),
-                modifier = Modifier.padding(horizontal = 8.dp)
-            ) {
-                items(filteredProducts, key = { it.id }) { product ->
-                    ProductCardComposeView(
-                        productName = product.name,
-                        price = product.price,
-                        stock = product.stock,
-                        icon = product.imageRes
-                    ) {
-
+            // Mostrar mensaje si no hay resultados de búsqueda
+            if (filteredProducts.isEmpty() && searchText.isNotEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "No se encontraron productos",
+                        style = textStyleRobotoBoldSp24,
+                        color = Color.Gray
+                    )
+                    Text(
+                        text = "Intenta con otros términos de búsqueda",
+                        style = textStyleRobotoRegularSp12,
+                        color = Color.Gray
+                    )
+                }
+            } else {
+                // Grid de productos con información única para cada uno
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(120.dp),
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                ) {
+                    items(filteredProducts, key = { it.id }) { product ->
+                        ProductCardComposeView(
+                            productName = product.name,
+                            price = product.price,
+                            stock = product.stock,
+                            icon = product.imageRes
+                        ) {
+                            // Tu función para disminuir stock
+                            decreaseStock(product.id)
+                        }
                     }
                 }
             }
         }
     }
+
+    // Bottom sheet (se mantiene igual)
     if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = {

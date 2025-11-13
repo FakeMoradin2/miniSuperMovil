@@ -55,7 +55,6 @@ import com.example.minimartapp.ui.theme.Styles.SecondaryButtonStyle
 import com.example.minimartapp.ui.theme.Styles.TersearyButtonStyle
 import com.example.minimartapp.ui.theme.Styles.textStyleRobotoMediumSp12
 import com.example.minimartapp.ui.theme.Styles.textStyleRobotoMediumsp16
-import com.example.minimartapp.ui.theme.Styles.textStyleRobotoRegularSp10
 import com.example.minimartapp.ui.theme.Styles.textStyleRobotoSp12
 
 
