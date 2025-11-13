@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -52,7 +53,6 @@ import com.example.minimartapp.ui.widgets.PasswordValidationComposeView
 import com.example.minimartapp.ui.widgets.TopBarComposeView
 import com.example.minimartapp.ui.widgets.TypesButtons
 
-
 @Composable
 fun RegisterComposeView(
     registerViewModel: RegisterViewModel = hiltViewModel(),
@@ -60,16 +60,47 @@ fun RegisterComposeView(
     onNavigateBack: () -> Unit,
 ) {
 
+    // Estados para validación
+    var showValidationErrors by remember { mutableStateOf(false) }
+
+    // Validar si las contraseñas coinciden
+    val doPasswordsMatch = registerViewModel.passwordRegisterInput == registerViewModel.confirmRegisterInput
+
+    // Validaciones individuales de campos
+    val isNameValid = registerViewModel.nameRegisterInput.isNotEmpty()
+    val isPhoneValid = registerViewModel.phoneRegisterInput.isNotEmpty()
+    val isPasswordValid = registerViewModel.passwordRegisterInput.isNotEmpty()
+    val isConfirmPasswordValid = registerViewModel.confirmRegisterInput.isNotEmpty()
+
+    // Validaciones específicas de contraseña
+    val hasMinLength = registerViewModel.passwordRegisterInput.length >= 8
+    val hasUpperCase = registerViewModel.passwordRegisterInput.any { it.isUpperCase() }
+    val hasLowerCase = registerViewModel.passwordRegisterInput.any { it.isLowerCase() }
+    val hasNumbers = registerViewModel.passwordRegisterInput.any { it.isDigit() }
+    val hasSpecialChar = registerViewModel.passwordRegisterInput.any { !it.isLetterOrDigit() }
+
+    // Calcular si el formulario es válido
+    val isFormValid = isNameValid &&
+            isPhoneValid &&
+            isPasswordValid &&
+            isConfirmPasswordValid &&
+            doPasswordsMatch &&
+            registerViewModel.checkBoxIsCheck &&
+            hasMinLength && // Agregar validación de longitud mínima
+            hasUpperCase && // Agregar validación de mayúscula
+            hasLowerCase && // Agregar validación de minúscula
+            hasNumbers &&   // Agregar validación de números
+            hasSpecialChar  // Agregar validación de caracteres especiales
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(), topBar = {
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
             TopBarComposeView("") {
-//add accion de regreso
                 onNavigateBack.invoke()
             }
-        }) { padding ->
-        Surface(
-        ) {
+        }
+    ) { padding ->
+        Surface {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -102,93 +133,174 @@ fun RegisterComposeView(
                 )
                 Spacer(modifier = Modifier.height(dp28))
 
-                InputTextFieldComposeView(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "Name",
-                    placeholder = "Enter your Name",
-                    value = registerViewModel.nameRegisterInput
-                ) { valueChange ->
-                    registerViewModel.nameRegisterInput = valueChange
+                // Campo de nombre con validación
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    InputTextFieldComposeView(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = "Name",
+                        placeholder = "Enter your Name",
+                        value = registerViewModel.nameRegisterInput
+                    ) { valueChange ->
+                        registerViewModel.nameRegisterInput = valueChange
+                    }
+
+                    // Mensaje de error debajo del campo
+                    if (showValidationErrors && !isNameValid) {
+                        Text(
+                            text = "Name cannot be empty",
+                            color = Color.Red,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(dp16))
-                InputTextFieldComposeView(
-                    keyboardType = KeyboardType.Phone,
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "Phone Number",
-                    placeholder = "+1(555)123-4567",
-                    value = registerViewModel.phoneRegisterInput
-                ) { valueChange ->
-                    registerViewModel.phoneRegisterInput = valueChange
+
+                // Campo de teléfono con validación
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    InputTextFieldComposeView(
+                        keyboardType = KeyboardType.Phone,
+                        modifier = Modifier.fillMaxWidth(),
+                        label = "Phone Number",
+                        placeholder = "+1(555)123-4567",
+                        value = registerViewModel.phoneRegisterInput
+                    ) { valueChange ->
+                        registerViewModel.phoneRegisterInput = valueChange
+                    }
+
+                    // Mensaje de error debajo del campo
+                    if (showValidationErrors && !isPhoneValid) {
+                        Text(
+                            text = "Phone number cannot be empty",
+                            color = Color.Red,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(dp16))
-                InputTextFieldComposeView(
-                    keyboardType = KeyboardType.Password,
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "Password",
-                    placeholder = "Create a password",
-                    isPassword = true,
-                    value = registerViewModel.passwordRegisterInput
-                ) { valueChange ->
-                    registerViewModel.passwordRegisterInput = valueChange
+
+                // Campo de contraseña con validación
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    InputTextFieldComposeView(
+                        keyboardType = KeyboardType.Password,
+                        modifier = Modifier.fillMaxWidth(),
+                        label = "Password",
+                        placeholder = "Create a password",
+                        isPassword = true,
+                        value = registerViewModel.passwordRegisterInput
+                    ) { valueChange ->
+                        registerViewModel.passwordRegisterInput = valueChange
+                    }
+
+                    // Mensaje de error debajo del campo
+                    if (showValidationErrors && !isPasswordValid) {
+                        Text(
+                            text = "Password cannot be empty",
+                            color = Color.Red,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                        )
+                    }
                 }
+
                 Spacer(modifier = Modifier.height(dp8))
-                PasswordValidationComposeView(isValid = false)
+
+                // Componente de validación de contraseña con indicadores visuales
+                PasswordValidationComposeView(
+                    password = registerViewModel.passwordRegisterInput,
+                    showValidation = true
+                )
+
                 Spacer(modifier = Modifier.height(dp8))
 
-                InputTextFieldComposeView(
-                    keyboardType = KeyboardType.Password,
-                    modifier = Modifier.fillMaxWidth(),
-                    label = " Confirm Password",
-                    placeholder = "Confirm your password",
-                    isPassword = true,
-                    value = registerViewModel.confirmRegisterInput
-                ) { valueChange ->
-                    registerViewModel.confirmRegisterInput = valueChange
-                }
-                Spacer(modifier = Modifier.height(dp16))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(
-                        checked = registerViewModel.checkBoxIsCheck, onCheckedChange = {
-                            registerViewModel.checkBoxIsCheck = it
+                // Campo de confirmar contraseña con validación
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    InputTextFieldComposeView(
+                        keyboardType = KeyboardType.Password,
+                        modifier = Modifier.fillMaxWidth(),
+                        label = " Confirm Password",
+                        placeholder = "Confirm your password",
+                        isPassword = true,
+                        value = registerViewModel.confirmRegisterInput
+                    ) { valueChange ->
+                        registerViewModel.confirmRegisterInput = valueChange
+                    }
+
+                    // Mensajes de error para confirmar contraseña
+                    if (showValidationErrors) {
+                        if (!isConfirmPasswordValid) {
+                            Text(
+                                text = "Please confirm your password",
+                                color = Color.Red,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                            )
+                        } else if (!doPasswordsMatch) {
+                            Text(
+                                text = "Passwords do not match",
+                                color = Color.Red,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                            )
                         }
-                    )
-                    Spacer(modifier = Modifier.width(dp4))
-                    Text(
-                        "I gree to the Terms of Service and Privacy Policy ",
-                        style = textStyleRobotoMediumSp12
-                    ) // agregar un stilo de letra
+                    }
                 }
+
+                Spacer(modifier = Modifier.height(dp16))
+
+                // Checkbox con validación
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(
+                            checked = registerViewModel.checkBoxIsCheck,
+                            onCheckedChange = {
+                                registerViewModel.checkBoxIsCheck = it
+                            }
+                        )
+                        Spacer(modifier = Modifier.width(dp4))
+                        Text(
+                            "I agree to the Terms of Service and Privacy Policy ",
+                            style = textStyleRobotoMediumSp12
+                        )
+                    }
+
+                    // Mensaje de error para el checkbox
+                    if (showValidationErrors && !registerViewModel.checkBoxIsCheck) {
+                        Text(
+                            text = "You must accept the terms to continue",
+                            color = Color.Red,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 16.dp, top = 4.dp)
+                        )
+                    }
+                }
+
                 Spacer(modifier = Modifier.height(dp24))
+
+                // Botón con validación
                 ButtonComposeView(
                     typesButtons = TypesButtons.Primary,
+                    isEnable = isFormValid,
                     title = "Create Account",
-
                 ) {
+                    if (isFormValid) {
+                        // Aquí iría la lógica para registrar al usuario
+                        // registerViewModel.registerUser()
+                        onNavigateLogin.invoke()
+                    } else {
+                        // Mostrar errores de validación
+                        showValidationErrors = true
+                    }
+                }
 
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = dp24),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text("Already have an account? ", style = TextStyleRobotoRegularSp14)
-                    Spacer(modifier = Modifier.width(dp3))
-                    Text(
-                        "sign in",
-                        style = TextStyleRobotoRMediumSp14,
-                        color = Color(0xFF64B5F6),
-                        modifier = Modifier.clickable(enabled = true, onClick = {
-                            onNavigateLogin.invoke()
-                        })
-                    )
-                }
             }
         }
     }

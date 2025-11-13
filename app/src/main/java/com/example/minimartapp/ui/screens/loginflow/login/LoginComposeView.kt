@@ -18,10 +18,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +43,7 @@ import com.example.minimartapp.ui.screens.loginflow.LoginViewModel
 import com.example.minimartapp.ui.theme.DpSizes.dp16
 import com.example.minimartapp.ui.theme.DpSizes.dp24
 import com.example.minimartapp.ui.theme.DpSizes.dp28
+import androidx.compose.material3.MaterialTheme
 import com.example.minimartapp.ui.theme.DpSizes.dp3
 import com.example.minimartapp.ui.theme.DpSizes.dp30
 import com.example.minimartapp.ui.theme.DpSizes.dp4
@@ -60,10 +64,27 @@ fun LoginComposeView(
     onNavigateBack: () -> Unit,
     onNavigateRecoverPassword: () -> Unit,
     onNavigateToHome: () -> Unit,
-    //------------
 ) {
     val state = loginViewModel.observerState.collectAsState()
     val context = LocalContext.current
+
+    // Estados para validación
+    var isUsernameEmpty by remember { mutableStateOf(false) }
+    var isPasswordEmpty by remember { mutableStateOf(false) }
+    var showValidationErrors by remember { mutableStateOf(false) }
+
+    // Función para validar si el formulario es válido
+    fun validateForm(): Boolean {
+        val isUsernameValid = loginViewModel.nameLoginInput.isNotEmpty()
+        val isPasswordValid = loginViewModel.passwordLoginInput.isNotEmpty()
+        val isCheckboxChecked = loginViewModel.checkBoxIsCheck
+
+        isUsernameEmpty = !isUsernameValid
+        isPasswordEmpty = !isPasswordValid
+        showValidationErrors = true
+
+        return isUsernameValid && isPasswordValid && isCheckboxChecked
+    }
 
     when (state.value) {
         is ResponseStatus.Error<*> -> {
@@ -86,7 +107,6 @@ fun LoginComposeView(
         }
     }
 
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -95,7 +115,6 @@ fun LoginComposeView(
             }
         }
     ) { padding ->
-
 
         Column(
             modifier = Modifier
@@ -127,26 +146,63 @@ fun LoginComposeView(
             )
 
             Spacer(modifier = Modifier.height(dp28))
-            InputTextFieldComposeView(
-                modifier = Modifier.fillMaxWidth(),
-                label = "Username",
-                placeholder = "Enter your Username",
-                value = loginViewModel.nameLoginInput,
-            ) { valueChange ->
-                loginViewModel.nameLoginInput = valueChange
+
+            // Campo de usuario con validación
+            Column(modifier = Modifier.fillMaxWidth()) {
+                InputTextFieldComposeView(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = "Username",
+                    placeholder = "Enter your Username",
+                    value = loginViewModel.nameLoginInput,
+                ) { valueChange ->
+                    loginViewModel.nameLoginInput = valueChange
+                    // Limpiar error cuando el usuario empiece a escribir
+                    if (isUsernameEmpty && valueChange.isNotEmpty()) {
+                        isUsernameEmpty = false
+                    }
+                }
+
+                // Mensaje de error debajo del campo
+                if (showValidationErrors && isUsernameEmpty) {
+                    Text(
+                        text = "Username cannot be empty",
+                        color = Color.Red,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(dp16))
-            InputTextFieldComposeView(
-                keyboardType = KeyboardType.Password,
-                modifier = Modifier.fillMaxWidth(),
-                label = "Password",
-                placeholder = "Enter your Password",
-                isPassword = true,
-                value = loginViewModel.passwordLoginInput,
-            ) { valueChange ->
-                loginViewModel.passwordLoginInput = valueChange
+
+            // Campo de contraseña con validación
+            Column(modifier = Modifier.fillMaxWidth()) {
+                InputTextFieldComposeView(
+                    keyboardType = KeyboardType.Password,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = "Password",
+                    placeholder = "Enter your Password",
+                    isPassword = true,
+                    value = loginViewModel.passwordLoginInput,
+                ) { valueChange ->
+                    loginViewModel.passwordLoginInput = valueChange
+                    // Limpiar error cuando el usuario empiece a escribir
+                    if (isPasswordEmpty && valueChange.isNotEmpty()) {
+                        isPasswordEmpty = false
+                    }
+                }
+
+                // Mensaje de error debajo del campo
+                if (showValidationErrors && isPasswordEmpty) {
+                    Text(
+                        text = "Password cannot be empty",
+                        color = Color.Red,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                    )
+                }
             }
+
             Spacer(modifier = Modifier.height(dp16))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -161,16 +217,40 @@ fun LoginComposeView(
                 Text(
                     "Remember me",
                     style = textStyleRobotoMediumSp12
-                ) // agregar un stilo de letra
+                )
             }
+
+            // Mensaje de error para el checkbox
+            if (showValidationErrors && !loginViewModel.checkBoxIsCheck) {
+                Text(
+                    text = "You must accept the terms to continue",
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, top = 4.dp)
+                )
+            }
+
             Spacer(modifier = Modifier.height(dp16))
+
+            // Determinar si el botón debe estar habilitado
+            val isButtonEnabled = loginViewModel.nameLoginInput.isNotEmpty() &&
+                    loginViewModel.passwordLoginInput.isNotEmpty() &&
+                    loginViewModel.checkBoxIsCheck
+
             ButtonComposeView(
                 typesButtons = TypesButtons.Primary,
                 title = "Sign In",
+                isEnable =  isButtonEnabled
             ) {
-                loginViewModel.fetchLogin()
-                onNavigateToHome.invoke()
+                // Validar antes de proceder
+                if (validateForm()) {
+                    loginViewModel.fetchLogin()
+                    onNavigateToHome.invoke()
+                }
             }
+
             Spacer(modifier = Modifier.height(dp16))
 
             Row(modifier = Modifier.fillMaxWidth()) {

@@ -61,7 +61,7 @@ fun HomeComposeView() {
     var products by remember {
         mutableStateOf(
             listOf(
-                Product(1, "Whole Milk", "25", 8, R.drawable.ic_logo, "Dairy"),
+                Product(1, "Whole Milk", "25", 0, R.drawable.ic_logo, "Dairy"),
                 Product(2, "Chocolate Cake", "50", 5, R.drawable.ic_logo, "Bakery"),
                 Product(3, "Orange Juice", "30", 10, R.drawable.ic_logo, "Drinks"),
                 Product(4, "Greek Yogurt", "20", 3, R.drawable.ic_logo, "Dairy"),

@@ -23,6 +23,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -303,6 +304,7 @@ fun ButtonComposeView(
                 getBackgroundButton(typesButtons, isEnable),
                 shape = RoundedCornerShape(8.dp)
             )
+
     ) {
         Row(
             modifier = Modifier
@@ -407,24 +409,91 @@ private fun getBorderButton(typesButtons: TypesButtons): Color {
 }
 
 @Composable
-fun PasswordValidationComposeView(isValid: Boolean) {
-    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            painter = painterResource(R.drawable.ic_check),
-            null,
-            tint = getValidPasswordColor(isValid)
-        )
+fun PasswordValidationComposeView(
+    password: String = "",
+    showValidation: Boolean = false
+) {
+    val hasMinLength = password.length >= 8
+    val hasUpperCase = password.any { it.isUpperCase() }
+    val hasLowerCase = password.any { it.isLowerCase() }
+    val hasNumbers = password.any { it.isDigit() }
+    val hasSpecialChar = password.any { !it.isLetterOrDigit() }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
         Text(
-            "At least 8 characters",
-            style = textStyleRobotoRegularSp10,
-            color = getValidPasswordColor(isValid)
+            text = "Password must contain:",
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.Gray
+        )
+
+        ValidationItem(
+            text = "At least 8 characters",
+            isValid = hasMinLength,
+            showValidation = showValidation || password.isNotEmpty()
+        )
+        ValidationItem(
+            text = "One uppercase letter (A-Z)",
+            isValid = hasUpperCase,
+            showValidation = showValidation || password.isNotEmpty()
+        )
+        ValidationItem(
+            text = "One lowercase letter (a-z)",
+            isValid = hasLowerCase,
+            showValidation = showValidation || password.isNotEmpty()
+        )
+        ValidationItem(
+            text = "One number (0-9)",
+            isValid = hasNumbers,
+            showValidation = showValidation || password.isNotEmpty()
+        )
+        ValidationItem(
+            text = "One special character (!@#$% etc.)",
+            isValid = hasSpecialChar,
+            showValidation = showValidation || password.isNotEmpty()
         )
     }
 }
 
-private fun getValidPasswordColor(isValid: Boolean): Color {
-    return if (isValid) Color(0xFF64B5F6)
-    else Color(0XFF4A4A4A)
+@Composable
+fun ValidationItem(
+    text: String,
+    isValid: Boolean,
+    showValidation: Boolean
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 2.dp)
+    ) {
+        if (showValidation) {
+            val iconColor = if (isValid) Color(0xFF4CAF50) else Color(0xFF757575)
+            val textColor = if (isValid) Color(0xFF4CAF50) else Color(0xFF757575)
+
+            Icon(
+                painter = painterResource(
+                    id = if (isValid) R.drawable.ic_check else R.drawable.ic_close
+                ),
+                contentDescription = null,
+                tint = iconColor,
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodySmall,
+                color = textColor
+            )
+        } else {
+            // Mostrar solo el texto sin iconos cuando no hay validación visible
+            Text(
+                text = "• $text",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
+            )
+        }
+    }
 }
 
 @Composable
