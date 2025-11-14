@@ -342,16 +342,12 @@ fun HomeComposeView() {
 
                 title = {
                     Spacer(modifier = Modifier.width(16.dp))
-                    Column {
+                    Row {
+
                         Spacer(modifier = Modifier.height(30.dp))
                         Text(
                             "Welcome!",
                             style = textStyleRobotoMediumSp35
-                        )
-                        Spacer(modifier = Modifier.height(5.dp))
-                        Text(
-                            "Explore, enjoy, and make the most of the app",
-                            style = textStyleRobotoRegularSp12
                         )
                     }
                 },
