@@ -30,7 +30,7 @@ class HomeRepository @Inject constructor(private val fakeContract: FakeContract)
 
     private suspend fun getProductsDeferred(): ResponseStatus<List<ProductDomain>> =
         makeNetWorkCall {
-            val response = fakeContract.fetchAllCategories()
+            val response = fakeContract.fetchAllProducts()
             fromDtoToDomainList(response.data)
         }
 }
