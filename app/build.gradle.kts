@@ -2,16 +2,17 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-
+//new
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
+
+
+    id("kotlin-parcelize")
     alias(libs.plugins.kotlinxSeralization)
-
-
 }
 
 android {
-    namespace = "com.example.minimartapp"
+    namespace = "com.example.project_miniMart"
     compileSdk = 36
 
     defaultConfig {
@@ -39,6 +40,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
     }
     buildFeatures {
         compose = true
@@ -55,13 +57,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.protolite.well.known.types)
-    implementation(libs.androidx.compose.foundation.layout)
-    implementation(libs.play.services.analytics.impl)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,27 +65,23 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-
     //hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+    //liveData
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+    implementation("androidx.compose.runtime:runtime-livedata:1.7.5")
+
     // Navigation
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.seralization.json)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
-    //depdencia de coil
-    implementation("io.coil-kt.coil3:coil-compose:3.3.0")
-
-    //dependencia de constrain Layoud
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
+    //constraint
+    implementation(libs.androidx.constraintlayout.compose)
 
 
-    //lottie
-    implementation(libs.lottie.compose)
-
-
-
-
+    //dataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
 }
