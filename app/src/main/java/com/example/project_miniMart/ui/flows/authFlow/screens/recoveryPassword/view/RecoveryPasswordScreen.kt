@@ -1,107 +1,121 @@
 package com.example.project_miniMart.ui.flows.authFlow.screens.recoveryPassword.view
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.example.minimartapp.ui.widgets.ButtonComposeView
+import com.example.minimartapp.ui.widgets.DsTextField
 import com.example.minimartapp.ui.widgets.InfoDialog
-import com.example.minimartapp.ui.widgets.InputTextFieldComposeView
+import com.example.minimartapp.ui.widgets.TopBarComposeView
+import com.example.minimartapp.ui.widgets.TypeAlert
 import com.example.minimartapp.ui.widgets.TypesButtons
 import com.example.project_miniMart.R
-import com.example.project_miniMart.ui.flows.authFlow.screens.recoveryPassword.RecoveryPasswordViewModel
-import com.example.project_miniMart.ui.flows.authFlow.screens.recoveryPassword.intent.RecoveryPasswordIntents
-import com.example.project_miniMart.widgets.heder.NavigationHeaderComposeView
+import com.example.project_miniMart.ui.flows.authFlow.screens.recoveryPassword.viewmodel.RecoveryPasswordViewModel
+import com.example.project_miniMart.ui.theme.Typography
 
+/**
+ * Pantalla para la recuperación de contraseña.
+ *
+ * @param navController El controlador de navegación.
+ * @param recoveryPasswordViewModel El ViewModel para esta pantalla.
+ */
 @Composable
 fun RecoveryPasswordScreen(
-    navController: NavHostController,
+    navController: NavController,
     recoveryPasswordViewModel: RecoveryPasswordViewModel = hiltViewModel()
 ) {
-    val state by recoveryPasswordViewModel.state.collectAsStateWithLifecycle()
+    val uiState by recoveryPasswordViewModel.uiState.collectAsStateWithLifecycle()
 
-    ConstraintLayout(Modifier.fillMaxSize()) {
-        val (header, email, send, cancel) = createRefs()
-
-
-        NavigationHeaderComposeView(
-            titleView = "Forgot your password?",
-            descriptionView = "Don’t worry. Enter your email to reset your password and regain access to your account.",
-            modifier = Modifier.constrainAs(header) {
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                top.linkTo(parent.top)
-            })
-
-        InputTextFieldComposeView(
-            keyboardType = KeyboardType.Email,
-            modifier = Modifier
-                .fillMaxWidth()
-                .constrainAs(email) {
-                    start.linkTo(parent.start, margin = 16.dp)
-                    end.linkTo(parent.end, margin = 16.dp)
-                    top.linkTo(header.bottom, margin = 24.dp)
-                    width = Dimension.fillToConstraints
-                },
-            label = "Email",
-            placeholder = "john@example.com",
-            value = state.email,
-            isError = state.isErrorEmail,
-            textError = "The email is invalid"
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            recoveryPasswordViewModel.channel.trySend(
-                RecoveryPasswordIntents.EmailChangeValue(
-                    it
-                )
-            )
-        }
-
-        ButtonComposeView(
-            isEnable = state.isEnableButton,
-            typesButtons = TypesButtons.Primary,
-            title = "Password Recovery",
-            modifier = Modifier.constrainAs(send) {
-                start.linkTo(parent.start, margin = 16.dp)
-                end.linkTo(parent.end, margin = 16.dp)
-                top.linkTo(email.bottom, margin = 24.dp)
-                width = Dimension.fillToConstraints
+            TopBarComposeView(stringResource(R.string.recovery_password_title)) {
+                navController.popBackStack()
             }
-        ) {
-            recoveryPasswordViewModel.channel.trySend(
-                RecoveryPasswordIntents.RecoveryPassword
+
+            Spacer(modifier = Modifier.height(28.dp))
+
+            Text(
+                text = stringResource(R.string.recovery_password_description),
+                style = Typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
-        }
-        ButtonComposeView(
-            typesButtons = TypesButtons.Secondary,
-            title = "Back to Login",
-            modifier = Modifier.constrainAs(cancel) {
-                start.linkTo(parent.start, margin = 16.dp)
-                end.linkTo(parent.end, margin = 16.dp)
-                top.linkTo(send.bottom, margin = 24.dp)
-                width = Dimension.fillToConstraints
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            DsTextField(
+                value = uiState.email,
+                onValueChange = recoveryPasswordViewModel::onEmailChange,
+                placeholder = stringResource(R.string.email_placeholder),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                isError = !uiState.email.validEmail(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            ButtonComposeView(
+                isEnable = uiState.isButtonEnabled,
+                typesButtons = TypesButtons.Primary,
+                title = stringResource(R.string.recover_password_button),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+            ) {
+                recoveryPasswordViewModel.onRecoverClick()
             }
-        ) {
-            navController.popBackStack()
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            ButtonComposeView(
+                typesButtons = TypesButtons.Secondary,
+                title = stringResource(R.string.back_to_login_button),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+            ) {
+                navController.popBackStack()
+            }
         }
 
-        if(state.showAlert) InfoDialog(onDismiss = {
-            recoveryPasswordViewModel.channel.trySend(
-                RecoveryPasswordIntents.HideAlert
+        if (uiState.isLoading) {
+            CircularProgressIndicator()
+        }
+
+        uiState.successMessage?.let {
+            InfoDialog(
+                onDismiss = recoveryPasswordViewModel::hideSuccessMessage,
+                title = stringResource(R.string.recovery_success_title),
+                message = stringResource(it),
+                typeAlert = TypeAlert.SUCCESS
             )
-        }, "Recovery Password", stringResource(state.errorMassageAlert), typeAlert = state.typeAlert!!)
+        }
+
+        uiState.errorMessage?.let {
+            InfoDialog(
+                onDismiss = recoveryPasswordViewModel::hideErrorMessage,
+                title = stringResource(R.string.recovery_error_title),
+                message = stringResource(it),
+                typeAlert = TypeAlert.ERROR
+            )
+        }
     }
 }
