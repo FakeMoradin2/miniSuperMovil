@@ -4,6 +4,7 @@ package com.example.project_miniMart.datasource.common
 import com.example.project_miniMart.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.sql.SQLException
 
 suspend fun <T> makeNetWorkCall(
     call: suspend () -> T
@@ -13,5 +14,9 @@ suspend fun <T> makeNetWorkCall(
     }catch (e: Exception){
         val errorMessage = R.string.unknow_host_exepcion
         ResponseStatus.Error(errorMessage)
+    }catch (e: SQLException) {
+        ResponseStatus.Error(R.string.unknow_exepcion)
+    } catch (e: ClassNotFoundException) {
+        ResponseStatus.Error(R.string.unknow_exepcion)
     }
 }

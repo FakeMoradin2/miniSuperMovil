@@ -35,7 +35,8 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopBarComposeView(
-            "Login"
+            "Login",
+            "Sign in to access your account."
         ) {
             navController.popBackStack()
         }

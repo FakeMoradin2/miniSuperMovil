@@ -54,7 +54,7 @@ fun ListCategories(
 ) {
     LazyVerticalGrid(
         modifier = modifier.fillMaxWidth(),
-        columns = GridCells.Fixed(5),
+        columns = GridCells.Fixed(7),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -95,17 +95,17 @@ fun ItemCategory(isCheck: Boolean, text: String, onclick: (String) -> Unit) {
 
 //@Preview
 @Composable
-fun ButtonPill(label: String, isEnable: Boolean = true, onclick: () -> Unit) {
+fun ButtonPill(label: String, isEnable: Boolean = true, color:Color =AccentDark, onclick: () -> Unit) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(20.dp))
             .clickable(onClick = { onclick() }, enabled = isEnable)
-            .height(25.dp)
+            .height(24.dp)
             .background(
-                if (isEnable) AccentDark else Color.LightGray,
+                if (isEnable) color else Color.LightGray,
                 shape = RoundedCornerShape(20.dp)
             )
-            .padding(horizontal = 16.dp, vertical = 6.dp),
+            .padding(horizontal = 10.dp, vertical = 6.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(

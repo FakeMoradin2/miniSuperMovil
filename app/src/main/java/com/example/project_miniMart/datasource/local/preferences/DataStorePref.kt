@@ -1,5 +1,6 @@
 package com.example.project_miniMart.datasource.local.preferences
 
+import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.example.project_miniMart.utils.IS_LOGGED_IN
@@ -11,7 +12,7 @@ import javax.inject.Inject
 
 
 class DataStorePref @Inject constructor(
-    private val dataStore: androidx.datastore.core.DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>
 ) {
 
     val getEmail: Flow<String> = dataStore.data

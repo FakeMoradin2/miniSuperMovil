@@ -42,7 +42,8 @@ fun RegisterScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopBarComposeView(
-            "Register"
+            "Register",
+            "Please complete the form below to register a new account."
         ) {
             navController.popBackStack()
         }

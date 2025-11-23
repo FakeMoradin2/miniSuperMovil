@@ -303,7 +303,8 @@ fun getRecoveryPasswordRequest(email: String): Int {
 
 fun getAllCategoriesRequest(): ProductsResponse {
     val randomValue = Random.nextInt(0, 100)
-    return if (randomValue <= 50) {
+            // return if (randomValue <= 50) {
+    return if (true) {
         ProductsResponse(
             status = 200,
             null,

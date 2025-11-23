@@ -3,9 +3,11 @@ package com.example.project_miniMart.ui.flows.homeFlow.screens.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.minimartapp.ui.widgets.TypeAlert
+import com.example.project_miniMart.datasource.local.bd.entities.ShoppingEntity
 import com.example.project_miniMart.datasource.local.preferences.DataStorePref
 import com.example.project_miniMart.domain.models.ProductDomain
 import com.example.project_miniMart.domain.repositories.HomeTask
+import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationHistory
 import com.example.project_miniMart.ui.flows.homeFlow.screens.home.intent.HomeIntents
 import com.example.project_miniMart.ui.flows.homeFlow.screens.home.model.HomeStates
 import com.example.project_miniMart.utils.handleRequest
@@ -27,8 +29,10 @@ class HomeViewModel @Inject constructor(
     private val dataStorePref: DataStorePref,
     private val homeRepository: HomeTask,
 ) : ViewModel() {
+
     private val _state = MutableStateFlow(HomeStates())
     val state: StateFlow<HomeStates> = _state
+
     private var completeListProducts = emptyList<ProductDomain>()
 
 
@@ -68,10 +72,28 @@ class HomeViewModel @Inject constructor(
                         }
 
                         is HomeIntents.UpdateGridScrolling ->  _state.value =  _state.value.copy(isScrolling = it.isScrolling)
+                        is HomeIntents.AddProductShoppingCar -> addProductShoppingCar(it.shoppingEntity)
+                        HomeIntents.HideButtonSheet -> {
+                            _state.value = _state.value.copy(showBottomSheet = false)
+                            HomeEventManager.triggerEvent(HomeEvent.NavigateTo(DestinationHistory))
+                        }
                     }
                 }
         }
     }
+
+    private suspend fun addProductShoppingCar(shoppingEntity: ShoppingEntity){
+        handleRequest(
+            call = {homeRepository.insertShoppingCar(shoppingEntity)},
+            onSuccess = {
+                HomeEventManager.triggerEvent(HomeEvent.ShowSnackBar(it))
+            },
+            onError = {
+                HomeEventManager.triggerEvent(HomeEvent.ShowSnackBar(it))
+            }
+        )
+    }
+
 
     private fun checkNewCategory(label: String) {
         _state.value = _state.value.copy(

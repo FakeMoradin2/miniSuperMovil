@@ -6,4 +6,6 @@ object DpSizes {
     val Dp4 = 4.dp
     val Dp8 = 8.dp
     val Dp16 = 16.dp
+    val Dp12 = 12.dp
+    val Dp24 = 24.dp
 }
