@@ -12,6 +12,8 @@ object DestinationShoppingCar
 object DestinationHistory
 
 @Serializable
+object DestinationAccount
+@Serializable
 data class DestinationVoucher(
     val saleId: Int
 )

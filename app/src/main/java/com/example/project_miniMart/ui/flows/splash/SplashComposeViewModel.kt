@@ -1,9 +1,8 @@
 package com.example.project_miniMart.ui.flows.splash
 
 
-import com.example.project_miniMart.datasource.local.preferences.DataStorePref
-
 import androidx.lifecycle.ViewModel
+import com.example.project_miniMart.datasource.local.preferences.DataStorePref
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

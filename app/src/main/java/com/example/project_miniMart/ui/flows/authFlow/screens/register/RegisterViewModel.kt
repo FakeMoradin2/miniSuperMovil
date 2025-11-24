@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.String
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(private val loginTask: LoginTask) : ViewModel() {

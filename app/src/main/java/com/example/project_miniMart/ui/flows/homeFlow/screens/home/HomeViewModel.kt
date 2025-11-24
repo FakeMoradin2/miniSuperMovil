@@ -7,12 +7,14 @@ import com.example.project_miniMart.datasource.local.bd.entities.ShoppingEntity
 import com.example.project_miniMart.datasource.local.preferences.DataStorePref
 import com.example.project_miniMart.domain.models.ProductDomain
 import com.example.project_miniMart.domain.repositories.HomeTask
+import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationAccount
 import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationHistory
 import com.example.project_miniMart.ui.flows.homeFlow.screens.home.intent.HomeIntents
 import com.example.project_miniMart.ui.flows.homeFlow.screens.home.model.HomeStates
 import com.example.project_miniMart.utils.handleRequest
 import com.example.project_miniMart.utils.uiManager.HomeEventManager
 import com.example.project_miniMart.utils.uiManager.events.HomeEvent
+import com.example.project_miniMart.utils.uiManager.events.HomeEvent.*
 import com.example.project_miniMart.widgets.listCategories.ChipCategoryItem
 import com.example.project_miniMart.widgets.loader.DsLoaderView
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,31 +53,34 @@ class HomeViewModel @Inject constructor(
                     when (it) {
                         HomeIntents.GetUserInfo -> _state.value = _state.value.copy(
                             userName = getUserName(),
-                            userEmail = dataStorePref.getEmail.first()
+                            userEmail = dataStorePref.getEmail.first(),
                         )
 
                         HomeIntents.GetAllProducts -> getAllProducts()
                         is HomeIntents.CheckCategory -> checkNewCategory(it.label)
                         is HomeIntents.ShowAndHideButtonSheet -> _state.value =
-                            _state.value.copy(showBottomSheet = it.show)
+                            _state.value.copy(showBottomSheet = it.show,)
 
                         HomeIntents.HideAlert -> {
-                            _state.value = _state.value.copy(
-                                showAlert = false,
-                                errorMassageAlert = 0,
-                                typeAlert = null
-                            )
+                            _state.value = _state.value.copy()
 
                             if (_state.value.allCategories.isEmpty() || _state.value.allProducts.isEmpty()) HomeEventManager.triggerEvent(
-                                HomeEvent.FinishApp
+                                FinishApp
                             )
                         }
 
-                        is HomeIntents.UpdateGridScrolling ->  _state.value =  _state.value.copy(isScrolling = it.isScrolling)
+                        is HomeIntents.UpdateGridScrolling ->  _state.value =  _state.value.copy(
+                            isScrolling = it.isScrolling,
+                        )
                         is HomeIntents.AddProductShoppingCar -> addProductShoppingCar(it.shoppingEntity)
                         HomeIntents.HideButtonSheet -> {
                             _state.value = _state.value.copy(showBottomSheet = false)
-                            HomeEventManager.triggerEvent(HomeEvent.NavigateTo(DestinationHistory))
+                            HomeEventManager.triggerEvent(NavigateTo(DestinationHistory))
+                        }
+
+                        HomeIntents.HideButtonSheetAccount -> {
+                            _state.value = _state.value.copy(showBottomSheet = false)
+                            HomeEventManager.triggerEvent(NavigateTo(DestinationAccount))
                         }
                     }
                 }
@@ -97,12 +102,12 @@ class HomeViewModel @Inject constructor(
 
     private fun checkNewCategory(label: String) {
         _state.value = _state.value.copy(
+            allProducts = if (label == "All") completeListProducts else completeListProducts.filter { it.category == label },
             allCategories = _state.value.allCategories.map {
                 it.copy(isCheck = it.label == label)
             },
-            allProducts = if (label == "All") completeListProducts else completeListProducts.filter { it.category == label }
 
-        )
+            )
     }
 
     private suspend fun getAllProducts() {
@@ -123,13 +128,16 @@ class HomeViewModel @Inject constructor(
 
 
                 _state.value =
-                    _state.value.copy(allProducts = it, allCategories = manualCategory + categories)
+                    _state.value.copy(
+                        allProducts = it,
+                        allCategories = manualCategory + categories,
+                    )
             },
             onError = {
                 _state.value = _state.value.copy(
                     showAlert = true,
                     errorMassageAlert = it,
-                    typeAlert = TypeAlert.ERROR
+                    typeAlert = TypeAlert.ERROR,
                 )
             }
         )

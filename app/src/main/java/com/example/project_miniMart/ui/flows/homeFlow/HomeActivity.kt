@@ -22,6 +22,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationAccount
 import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationHistory
 import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationSaleDetail
 import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationShoppingCar
@@ -76,7 +77,7 @@ class HomeActivity : ComponentActivity() {
 
                                 is HomeEvent.NavigateTo -> {
                                     when (val route = it.route) {
-                                        is DestinationShoppingCar, DestinationHistory, is DestinationSaleDetail ->  {
+                                        is DestinationShoppingCar, is DestinationHistory, is DestinationSaleDetail ,  is DestinationAccount ->  {
                                             navController.navigate(route)
                                         }
 

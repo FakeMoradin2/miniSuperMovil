@@ -1,15 +1,10 @@
 package com.example.project_miniMart.ui.flows.authFlow.screens.recoveryPassword.view
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -22,7 +17,6 @@ import com.example.minimartapp.ui.widgets.ButtonComposeView
 import com.example.minimartapp.ui.widgets.InfoDialog
 import com.example.minimartapp.ui.widgets.InputTextFieldComposeView
 import com.example.minimartapp.ui.widgets.TypesButtons
-import com.example.project_miniMart.R
 import com.example.project_miniMart.ui.flows.authFlow.screens.recoveryPassword.RecoveryPasswordViewModel
 import com.example.project_miniMart.ui.flows.authFlow.screens.recoveryPassword.intent.RecoveryPasswordIntents
 import com.example.project_miniMart.widgets.heder.NavigationHeaderComposeView

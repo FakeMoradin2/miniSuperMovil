@@ -4,6 +4,7 @@ import com.example.project_miniMart.datasource.local.bd.entities.ShoppingEntity
 
 sealed class HomeIntents {
     data object GetUserInfo : HomeIntents()
+
     data object HideAlert : HomeIntents()
     data object GetAllProducts : HomeIntents()
     data class CheckCategory(val label: String) : HomeIntents()
@@ -11,4 +12,6 @@ sealed class HomeIntents {
     data class UpdateGridScrolling(val isScrolling: Boolean) : HomeIntents()
     data class AddProductShoppingCar(val shoppingEntity: ShoppingEntity): HomeIntents()
     data object HideButtonSheet: HomeIntents()
+
+    data object HideButtonSheetAccount : HomeIntents()
 }
