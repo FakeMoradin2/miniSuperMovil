@@ -9,11 +9,10 @@ data class HomeStates(
     val userEmail: String = "",
     val allProducts: List<ProductDomain> = emptyList(),
     val allCategories: List<ChipCategoryItem> = emptyList(),
-    val showBottomSheet: Boolean = false,
+    val showBottomSheet : Boolean = false,
     val showAlert: Boolean = false,
     val errorMassageAlert: Int = 0,
     val typeAlert: TypeAlert? = null,
     val isScrolling: Boolean = false,
-    val showBottomSheetAccount: Boolean = false
-
+    val showBottomSheetAccount : Boolean = false,
 )

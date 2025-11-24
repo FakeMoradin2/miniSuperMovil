@@ -12,7 +12,7 @@ import kotlin.random.Random
 
 private var products =
     listOf(
-        ProductApi(1, "Whole Milk", 25.0, 0, "Dairy"),
+        ProductApi(1, "Whole Milk", 25.0, 8, "Dairy"),
         ProductApi(2, "Chocolate Cake", 50.0, 5, "Bakery"),
         ProductApi(3, "Orange Juice", 30.0, 10, "Drinks"),
         ProductApi(4, "Greek Yogurt", 20.0, 3, "Dairy"),

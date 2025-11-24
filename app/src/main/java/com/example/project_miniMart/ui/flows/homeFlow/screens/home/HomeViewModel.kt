@@ -53,25 +53,27 @@ class HomeViewModel @Inject constructor(
                     when (it) {
                         HomeIntents.GetUserInfo -> _state.value = _state.value.copy(
                             userName = getUserName(),
-                            userEmail = dataStorePref.getEmail.first(),
+                            userEmail = dataStorePref.getEmail.first()
                         )
 
                         HomeIntents.GetAllProducts -> getAllProducts()
                         is HomeIntents.CheckCategory -> checkNewCategory(it.label)
                         is HomeIntents.ShowAndHideButtonSheet -> _state.value =
-                            _state.value.copy(showBottomSheet = it.show,)
+                            _state.value.copy(showBottomSheet = it.show)
 
                         HomeIntents.HideAlert -> {
-                            _state.value = _state.value.copy()
+                            _state.value = _state.value.copy(
+                                showAlert = false,
+                                errorMassageAlert = 0,
+                                typeAlert = null
+                            )
 
                             if (_state.value.allCategories.isEmpty() || _state.value.allProducts.isEmpty()) HomeEventManager.triggerEvent(
-                                FinishApp
+                                HomeEvent.FinishApp
                             )
                         }
 
-                        is HomeIntents.UpdateGridScrolling ->  _state.value =  _state.value.copy(
-                            isScrolling = it.isScrolling,
-                        )
+                        is HomeIntents.UpdateGridScrolling ->  _state.value =  _state.value.copy(isScrolling = it.isScrolling)
                         is HomeIntents.AddProductShoppingCar -> addProductShoppingCar(it.shoppingEntity)
                         HomeIntents.HideButtonSheet -> {
                             _state.value = _state.value.copy(showBottomSheet = false)
@@ -79,7 +81,7 @@ class HomeViewModel @Inject constructor(
                         }
 
                         HomeIntents.HideButtonSheetAccount -> {
-                            _state.value = _state.value.copy(showBottomSheet = false)
+                            _state.value = _state.value.copy(showBottomSheetAccount = false)
                             HomeEventManager.triggerEvent(NavigateTo(DestinationAccount))
                         }
                     }
@@ -102,12 +104,12 @@ class HomeViewModel @Inject constructor(
 
     private fun checkNewCategory(label: String) {
         _state.value = _state.value.copy(
-            allProducts = if (label == "All") completeListProducts else completeListProducts.filter { it.category == label },
             allCategories = _state.value.allCategories.map {
                 it.copy(isCheck = it.label == label)
             },
+            allProducts = if (label == "All") completeListProducts else completeListProducts.filter { it.category == label }
 
-            )
+        )
     }
 
     private suspend fun getAllProducts() {
@@ -128,16 +130,13 @@ class HomeViewModel @Inject constructor(
 
 
                 _state.value =
-                    _state.value.copy(
-                        allProducts = it,
-                        allCategories = manualCategory + categories,
-                    )
+                    _state.value.copy(allProducts = it, allCategories = manualCategory + categories)
             },
             onError = {
                 _state.value = _state.value.copy(
                     showAlert = true,
                     errorMassageAlert = it,
-                    typeAlert = TypeAlert.ERROR,
+                    typeAlert = TypeAlert.ERROR
                 )
             }
         )

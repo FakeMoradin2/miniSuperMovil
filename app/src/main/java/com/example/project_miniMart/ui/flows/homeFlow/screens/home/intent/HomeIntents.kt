@@ -14,4 +14,5 @@ sealed class HomeIntents {
     data object HideButtonSheet: HomeIntents()
 
     data object HideButtonSheetAccount : HomeIntents()
+
 }
