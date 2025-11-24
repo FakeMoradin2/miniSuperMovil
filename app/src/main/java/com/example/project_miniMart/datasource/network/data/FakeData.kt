@@ -36,7 +36,7 @@ private var products =
         ProductApi(22, "Condensed Milk", 21.0, 7, "Dairy"),
         ProductApi(23, "Evaporated Milk", 23.0, 5, "Dairy"),
         ProductApi(24, "Goat Cheese", 37.0, 6, "Dairy"),
-        ProductApi(25, "String Cheese", 15.0, 14, "Dairy"),
+        ProductApi(25, "Cheese", 15.0, 14, "Dairy"),
         ProductApi(26, "Mascarpone", 44.0, 3, "Dairy"),
         ProductApi(27, "Monterey Jack", 36.0, 8, "Dairy"),
         ProductApi(28, "Swiss Cheese", 39.0, 5, "Dairy"),
