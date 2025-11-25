@@ -91,8 +91,4 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
 
-    // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-// Retrofit with Scalar Converter
-    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
 }
