@@ -4,7 +4,7 @@ package com.example.project_miniMart.domain.repositories
 import com.example.project_miniMart.R
 import com.example.project_miniMart.datasource.common.ResponseStatus
 import com.example.project_miniMart.datasource.common.makeNetWorkCall
-import com.example.project_miniMart.datasource.network.data.FakeContract
+import com.example.project_miniMart.datasource.network.data.ApiContract
 import com.example.project_miniMart.datasource.network.requests.LoginRequest
 import com.example.project_miniMart.datasource.network.requests.RegisterRequest
 import com.example.project_miniMart.domain.mappers.UsersDtoToMapper.Companion.fromDtoToDomain
@@ -19,7 +19,7 @@ interface LoginTask {
     suspend fun recoveryPassword(email: String): ResponseStatus<Int>
 }
 
-class LoginRepository @Inject constructor(private val fakeContract: FakeContract) : LoginTask {
+class LoginRepository @Inject constructor(private val apiContract: ApiContract) : LoginTask {
 
     //--------------- LOGIN
 
@@ -43,7 +43,7 @@ class LoginRepository @Inject constructor(private val fakeContract: FakeContract
 
     private suspend fun getLoginDeferred(loginRequest: LoginRequest): ResponseStatus<UserDataDomain> =
         makeNetWorkCall {
-            val response = fakeContract.fetchLogin(loginRequest)
+            val response = apiContract.fetchLogin(loginRequest)
             fromDtoToDomain(response.data)
         }
 
@@ -69,7 +69,7 @@ class LoginRepository @Inject constructor(private val fakeContract: FakeContract
 
     private suspend fun registerDeferred(registerRequest: RegisterRequest): ResponseStatus<UserDataDomain> =
         makeNetWorkCall {
-            val response = fakeContract.requestRegister(registerRequest)
+            val response = apiContract.requestRegister(registerRequest)
             fromDtoToDomain(response.dataResponse)
         }
 
@@ -93,7 +93,7 @@ class LoginRepository @Inject constructor(private val fakeContract: FakeContract
 
     private suspend fun recoveryDeferred(email: String): ResponseStatus<Int> =
         makeNetWorkCall {
-            val response = fakeContract.recoveryPassword(email)
+            val response = apiContract.recoveryPassword(email)
             response
         }
 
