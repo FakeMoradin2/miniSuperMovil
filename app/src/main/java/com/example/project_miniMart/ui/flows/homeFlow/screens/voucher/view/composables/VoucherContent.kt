@@ -13,8 +13,10 @@ import androidx.compose.ui.unit.dp
 import com.example.minimartapp.ui.widgets.ButtonComposeView
 import com.example.minimartapp.ui.widgets.TypesButtons
 import com.example.project_miniMart.datasource.local.bd.entities.SaleWithItems
+import com.example.project_miniMart.ui.flows.homeFlow.screens.voucher.model.VoucherStates
 import com.example.project_miniMart.utils.extensions.GetBitMapScreen
 import com.example.project_miniMart.utils.extensions.formatMoney
+import com.example.project_miniMart.utils.getCurrentDateFormatted
 import com.example.project_miniMart.utils.processBitMap
 import com.example.project_miniMart.widgets.dsvouchertemplate.main.builder.DsVoucherBuilder
 import com.example.project_miniMart.widgets.dsvouchertemplate.main.composables.DsBaseVoucherTemplate

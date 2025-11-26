@@ -7,14 +7,12 @@ import com.example.project_miniMart.datasource.local.bd.entities.ShoppingEntity
 import com.example.project_miniMart.datasource.local.preferences.DataStorePref
 import com.example.project_miniMart.domain.models.ProductDomain
 import com.example.project_miniMart.domain.repositories.HomeTask
-import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationAccount
 import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationHistory
 import com.example.project_miniMart.ui.flows.homeFlow.screens.home.intent.HomeIntents
 import com.example.project_miniMart.ui.flows.homeFlow.screens.home.model.HomeStates
 import com.example.project_miniMart.utils.handleRequest
 import com.example.project_miniMart.utils.uiManager.HomeEventManager
 import com.example.project_miniMart.utils.uiManager.events.HomeEvent
-import com.example.project_miniMart.utils.uiManager.events.HomeEvent.*
 import com.example.project_miniMart.widgets.listCategories.ChipCategoryItem
 import com.example.project_miniMart.widgets.loader.DsLoaderView
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,9 +50,7 @@ class HomeViewModel @Inject constructor(
                 .collect {
                     when (it) {
                         HomeIntents.GetUserInfo -> _state.value = _state.value.copy(
-                            userName = getUserName(),
-                            userEmail = dataStorePref.getEmail.first()
-                        )
+                            userName = dataStorePref.getUserName.first().plus("!"))
 
                         HomeIntents.GetAllProducts -> getAllProducts()
                         is HomeIntents.CheckCategory -> checkNewCategory(it.label)
@@ -77,12 +73,7 @@ class HomeViewModel @Inject constructor(
                         is HomeIntents.AddProductShoppingCar -> addProductShoppingCar(it.shoppingEntity)
                         HomeIntents.HideButtonSheet -> {
                             _state.value = _state.value.copy(showBottomSheet = false)
-                            HomeEventManager.triggerEvent(NavigateTo(DestinationHistory))
-                        }
-
-                        HomeIntents.HideButtonSheetAccount -> {
-                            _state.value = _state.value.copy(showBottomSheetAccount = false)
-                            HomeEventManager.triggerEvent(NavigateTo(DestinationAccount))
+                            HomeEventManager.triggerEvent(HomeEvent.NavigateTo(DestinationHistory))
                         }
                     }
                 }
@@ -140,13 +131,5 @@ class HomeViewModel @Inject constructor(
                 )
             }
         )
-    }
-
-    private suspend fun getUserName(): String {
-        val userName = dataStorePref.getUserName.first()
-        val nameSplit = userName.split(" ").filter { it.isNotBlank() }
-        val first = nameSplit.firstOrNull() ?: ""
-        val last = nameSplit.lastOrNull() ?: ""
-        return "$first $last!"
     }
 }

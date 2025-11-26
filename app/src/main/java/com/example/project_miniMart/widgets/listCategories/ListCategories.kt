@@ -54,7 +54,7 @@ fun ListCategories(
 ) {
     LazyVerticalGrid(
         modifier = modifier.fillMaxWidth(),
-        columns = GridCells.Fixed(7),
+        columns = GridCells.Fixed(5),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {

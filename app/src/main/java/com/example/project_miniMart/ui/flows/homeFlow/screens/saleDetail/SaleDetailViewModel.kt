@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.project_miniMart.domain.repositories.HomeTask
 import com.example.project_miniMart.ui.flows.homeFlow.screens.saleDetail.Intent.SaleDetailIntents
 import com.example.project_miniMart.ui.flows.homeFlow.screens.saleDetail.model.SaleDetailStates
+import com.example.project_miniMart.ui.flows.homeFlow.screens.voucher.intent.VoucherIntents
+import com.example.project_miniMart.ui.flows.homeFlow.screens.voucher.model.VoucherStates
 import com.example.project_miniMart.utils.handleRequest
-import com.example.project_miniMart.utils.uiManager.HomeEventManager
-import com.example.project_miniMart.utils.uiManager.events.HomeEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +34,6 @@ class SaleDetailViewModel @Inject constructor(private val homeTask: HomeTask) : 
                 .collect {
                     when (it) {
                         is SaleDetailIntents.GetDataOfVoucher -> setupDataVoucher(it.saleId)
-                        SaleDetailIntents.FinishFlow ->  HomeEventManager.triggerEvent(HomeEvent.RefreshApp)
                     }
                 }
         }
@@ -54,4 +53,3 @@ class SaleDetailViewModel @Inject constructor(private val homeTask: HomeTask) : 
         )
     }
 }
-

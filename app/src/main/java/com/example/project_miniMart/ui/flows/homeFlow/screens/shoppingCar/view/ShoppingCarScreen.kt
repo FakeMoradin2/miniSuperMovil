@@ -8,25 +8,37 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.minimartapp.ui.widgets.InfoDialog
 import com.example.minimartapp.ui.widgets.TopBarComposeView
 import com.example.minimartapp.ui.widgets.TypeAlert
+import com.example.project_miniMart.R
+import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationShoppingCar
+import com.example.project_miniMart.ui.flows.homeFlow.screens.home.intent.HomeIntents
+import com.example.project_miniMart.ui.flows.homeFlow.screens.home.model.HomeStates
 import com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar.ShoppingCarViewModel
 import com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar.intent.ShoppingCarIntent
 import com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar.view.components.ListProductCarItem
 import com.example.project_miniMart.ui.theme.AccentDark
 import com.example.project_miniMart.ui.theme.Styles.roboto16Medium
 import com.example.project_miniMart.ui.theme.Styles.roboto20Medium
+import com.example.project_miniMart.utils.uiManager.HomeEventManager
+import com.example.project_miniMart.utils.uiManager.events.HomeEvent
+import com.example.project_miniMart.widgets.heder.NavigationHeaderComposeView
 import com.example.project_miniMart.widgets.newswipeable.SwipeButtonComposeView
 
 @Composable
@@ -42,7 +54,7 @@ fun ShoppingCarScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopBarComposeView(
-            "My Car",
+            "My car",
             state.userName
         ) {
             navController.popBackStack()

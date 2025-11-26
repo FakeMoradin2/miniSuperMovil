@@ -18,6 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class VoucherViewModel @Inject constructor(private val homeTask: HomeTask) : ViewModel() {
+
     private val _state = MutableStateFlow(VoucherStates())
     val state: StateFlow<VoucherStates> = _state
 
@@ -27,6 +28,7 @@ class VoucherViewModel @Inject constructor(private val homeTask: HomeTask) : Vie
     init {
         setupIntents()
     }
+
     private fun setupIntents() {
         viewModelScope.launch {
             channel.consumeAsFlow()
@@ -39,9 +41,9 @@ class VoucherViewModel @Inject constructor(private val homeTask: HomeTask) : Vie
         }
     }
 
-    private suspend fun finishFlow() {
+    private suspend fun finishFlow(){
         handleRequest(
-            call = { homeTask.deleteAllCar() },
+            call = {homeTask.deleteAllCar()},
             onSuccess = {
                 HomeEventManager.triggerEvent(HomeEvent.RefreshApp)
             },
@@ -51,9 +53,9 @@ class VoucherViewModel @Inject constructor(private val homeTask: HomeTask) : Vie
         )
     }
 
-    private suspend fun setupDataVoucher(saleInt: Int) {
+    private suspend fun setupDataVoucher(saleInt: Int){
         handleRequest(
-            call = { homeTask.getSaleWithItemsById(saleInt) },
+            call = {homeTask.getSaleWithItemsById(saleInt)},
             onSuccess = {
                 it.let {
                     _state.value = _state.value.copy(dataVoucher = it)

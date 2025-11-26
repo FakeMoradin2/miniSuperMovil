@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.example.project_miniMart.R
 import com.example.project_miniMart.datasource.local.bd.entities.SaleItemEntity
 import com.example.project_miniMart.datasource.local.bd.entities.SaleWithItems
+import com.example.project_miniMart.ui.theme.AccentDark
 import com.example.project_miniMart.ui.theme.Styles.roboto10Medium
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoBoldSp16
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoMediumSp12

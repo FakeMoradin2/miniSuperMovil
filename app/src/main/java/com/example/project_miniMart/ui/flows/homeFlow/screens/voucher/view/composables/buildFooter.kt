@@ -17,10 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.project_miniMart.R
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoMediumSp16
+import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoRegularSp12
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoRegularSp14
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoThinSp12
 import com.example.project_miniMart.widgets.dsvouchertemplate.main.builder.DsVoucherBuilder

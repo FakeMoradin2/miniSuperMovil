@@ -7,7 +7,8 @@ import com.example.project_miniMart.datasource.local.bd.MemoryDS
 import com.example.project_miniMart.datasource.local.bd.entities.GroupShopping
 import com.example.project_miniMart.datasource.local.bd.entities.SaleWithItems
 import com.example.project_miniMart.datasource.local.bd.entities.ShoppingEntity
-import com.example.project_miniMart.datasource.network.data.ApiContract
+import com.example.project_miniMart.datasource.network.api.ApiContract
+import com.example.project_miniMart.datasource.network.data.FakeContract
 import com.example.project_miniMart.domain.mappers.ProductsDtoToMapper.Companion.fromDtoToDomainList
 import com.example.project_miniMart.domain.models.ProductDomain
 import com.example.project_miniMart.utils.getCurrentDateFormatted
@@ -33,8 +34,9 @@ interface HomeTask {
 }
 
 class HomeRepository @Inject constructor(
-    private val apiContract: ApiContract,
-    private val memoryDS: MemoryDS
+    private val fakeContract: FakeContract,
+    private val memoryDS: MemoryDS,
+    private val apiContract: ApiContract
 ) : HomeTask {
 
     override suspend fun fetchAllProducts(): ResponseStatus<List<ProductDomain>> {
@@ -52,7 +54,7 @@ class HomeRepository @Inject constructor(
 
     private suspend fun getProductsDeferred(): ResponseStatus<List<ProductDomain>> =
         makeNetWorkCall {
-            val response = apiContract.fetchAllCategories()
+            val response = apiContract.fetchProducts()
             fromDtoToDomainList(response.data)
         }
 

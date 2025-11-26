@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import com.example.minimartapp.ui.widgets.ButtonComposeView
 import com.example.minimartapp.ui.widgets.InputTextFieldComposeView
 import com.example.minimartapp.ui.widgets.TypesButtons
+import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoBOLDSp14
 import com.example.project_miniMart.ui.flows.authFlow.navigation.RecoveryPassword
 import com.example.project_miniMart.ui.flows.authFlow.screens.login.model.LoginStates
-import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoBOLDSp14
 import com.example.project_miniMart.utils.uiManager.AuthEventManager
 import com.example.project_miniMart.utils.uiManager.events.AuthEvent
 

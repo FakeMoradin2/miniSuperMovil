@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.minimartapp.ui.widgets.TypeAlert
 import com.example.project_miniMart.datasource.network.requests.RegisterRequest
+import com.example.project_miniMart.datasource.network.requests.RegisterRequestApi
 import com.example.project_miniMart.domain.repositories.LoginTask
 import com.example.project_miniMart.ui.flows.authFlow.screens.register.intent.RegisterIntents
 import com.example.project_miniMart.ui.flows.authFlow.screens.register.model.RegisterStates
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.String
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(private val loginTask: LoginTask) : ViewModel() {
@@ -149,13 +151,11 @@ class RegisterViewModel @Inject constructor(private val loginTask: LoginTask) : 
 
     private suspend fun toDoRegister() {
         val request = with(_state.value) {
-            RegisterRequest(
+            RegisterRequestApi(
                 userName = name,
-                workstation = "Client",
-                email = email,
-                age = 18,
-                isPrincipal = false,
+                password = password,
                 phone = phoneNumber,
+                rol = "cliente"
             )
         }
 

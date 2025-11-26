@@ -5,5 +5,6 @@ data class ProductDomain(
     val name: String,
     val price: Double,
     var stock: Int,
-    val category: String
+    val category: String,
+    val image : String
 )

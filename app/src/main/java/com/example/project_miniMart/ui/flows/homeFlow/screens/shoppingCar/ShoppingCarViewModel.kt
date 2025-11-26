@@ -1,24 +1,22 @@
 package com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.project_miniMart.R
 import com.example.project_miniMart.datasource.local.bd.entities.GroupShopping
+import com.example.project_miniMart.datasource.local.bd.entities.ShoppingEntity
 import com.example.project_miniMart.datasource.local.preferences.DataStorePref
 import com.example.project_miniMart.domain.repositories.HomeTask
 import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationVoucher
 import com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar.intent.ShoppingCarIntent
-import com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar.intent.ShoppingCarIntent.CancelAlert
-import com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar.intent.ShoppingCarIntent.CreateNewSale
-import com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar.intent.ShoppingCarIntent.DeleteProductFromCar
-import com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar.intent.ShoppingCarIntent.GetAllShoppingCar
-import com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar.intent.ShoppingCarIntent.HideAlert
-import com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar.intent.ShoppingCarIntent.ShowAlert
+import com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar.intent.ShoppingCarIntent.*
 import com.example.project_miniMart.ui.flows.homeFlow.screens.shoppingCar.model.ShoppingCarState
 import com.example.project_miniMart.utils.extensions.formatMoney
 import com.example.project_miniMart.utils.handleRequest
 import com.example.project_miniMart.utils.uiManager.HomeEventManager
 import com.example.project_miniMart.utils.uiManager.events.HomeEvent
+import com.example.project_miniMart.widgets.loader.DsLoaderView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +34,7 @@ class ShoppingCarViewModel @Inject constructor(
     private val _state = MutableStateFlow(ShoppingCarState())
     val state: StateFlow<ShoppingCarState> = _state
     private lateinit var productToDelete: GroupShopping
+
 
     val channel = Channel<ShoppingCarIntent>(Channel.BUFFERED)
 

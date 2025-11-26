@@ -5,8 +5,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.project_miniMart.ui.flows.homeFlow.screens.account.model.AccountStates
-import com.example.project_miniMart.ui.flows.homeFlow.screens.account.view.AccountScreen
 import com.example.project_miniMart.ui.flows.homeFlow.screens.history.view.HistoryScreen
 import com.example.project_miniMart.ui.flows.homeFlow.screens.home.view.HomeScreen
 import com.example.project_miniMart.ui.flows.homeFlow.screens.saleDetail.view.SaleDetailScreen
@@ -38,15 +36,6 @@ fun NavHostHome(navController: NavHostController) {
         composable <DestinationSaleDetail> {
             val destination = it.toRoute<DestinationSaleDetail>()
             SaleDetailScreen(destination.saleId)
-            {
-                navController.popBackStack()
-            }
-        }
-
-        composable<DestinationAccount> {
-            AccountScreen {
-                navController.popBackStack()
-            }
         }
     }
 }

@@ -16,8 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.minimartapp.ui.widgets.TopBarComposeView
+import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationHistory
+import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationSaleDetail
 import com.example.project_miniMart.ui.flows.homeFlow.screens.history.HistoryViewModel
 import com.example.project_miniMart.ui.flows.homeFlow.screens.history.intent.HistoryIntents
+import com.example.project_miniMart.utils.uiManager.HomeEventManager
+import com.example.project_miniMart.utils.uiManager.events.HomeEvent
 
 @Composable
 fun HistoryScreen(historyViewModel: HistoryViewModel = hiltViewModel(), onBack: () -> Unit) {

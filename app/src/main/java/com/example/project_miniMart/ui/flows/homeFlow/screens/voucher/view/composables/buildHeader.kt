@@ -3,6 +3,7 @@ package com.example.project_miniMart.ui.flows.homeFlow.screens.voucher.view.comp
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.project_miniMart.ui.theme.DpSizes.Dp24
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoBoldSp16

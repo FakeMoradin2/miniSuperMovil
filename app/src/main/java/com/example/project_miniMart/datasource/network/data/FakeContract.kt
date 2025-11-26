@@ -10,7 +10,7 @@ import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 // TODO: 1 -> request, 2 -> regresar el response
-class ApiContract @Inject constructor() {
+class FakeContract @Inject constructor() {
 
     suspend fun fetchLogin(loginRequest: LoginRequest): LoginResponse {
         delay(someTime())

@@ -109,7 +109,6 @@ suspend fun processBitMap(width:Dp,mainScope: CoroutineScope, currentActivity: C
     share(currentActivity.baseContext, currentActivity, bitmap)
 }
 
-val USER_EMAIL = stringPreferencesKey("Email")
 val USER_NAME = stringPreferencesKey("UserName")
 val IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
 const val USER_PREFERENCES_NAME = "InfoUser"
@@ -117,3 +116,5 @@ const val USER_PREFERENCES_NAME = "InfoUser"
 const val SHOPPING_ENTITY = "ShoppingEntity"
 const val SALE_ENTITY = "SaleEntity"
 const val DATABASE_NAME = "MiniMartDataBase"
+
+const val URL_BASE = "http://backendminisuper-env.eba-mfmvebct.us-east-2.elasticbeanstalk.com/api/."

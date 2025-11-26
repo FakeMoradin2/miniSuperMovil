@@ -1,15 +1,21 @@
 package com.example.project_miniMart.ui.flows.authFlow.screens.onboarding
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.minimartapp.ui.widgets.CardInformation
+import com.example.project_miniMart.R
+import com.example.project_miniMart.ui.theme.PrimaryLight
 import com.example.project_miniMart.ui.flows.authFlow.navigation.DestinationLogin
 import com.example.project_miniMart.ui.flows.authFlow.navigation.DestinationRegister
 import com.example.project_miniMart.ui.flows.authFlow.screens.onboarding.componets.PagerAutoScroll
-import com.example.project_miniMart.ui.theme.PrimaryLight
 import com.example.project_miniMart.utils.uiManager.AuthEventManager
 import com.example.project_miniMart.utils.uiManager.events.AuthEvent
 import com.example.project_miniMart.widgets.heder.NavigationHeaderComposeView

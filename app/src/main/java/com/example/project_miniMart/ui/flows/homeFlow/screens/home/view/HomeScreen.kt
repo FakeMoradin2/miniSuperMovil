@@ -32,6 +32,10 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,6 +50,7 @@ import com.example.minimartapp.ui.widgets.DottedLineComposeView
 import com.example.minimartapp.ui.widgets.InfoDialog
 import com.example.minimartapp.ui.widgets.LabelButtonSheet
 import com.example.project_miniMart.R
+import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationHistory
 import com.example.project_miniMart.ui.flows.homeFlow.navigation.DestinationShoppingCar
 import com.example.project_miniMart.ui.flows.homeFlow.screens.home.HomeViewModel
 import com.example.project_miniMart.ui.flows.homeFlow.screens.home.intent.HomeIntents
@@ -99,7 +104,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                 state = gridState,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(vertical = 8.dp),
+                    .padding(vertical = 3.dp),
                 columns = GridCells.Fixed(3)
             ) {
                 items(state.allProducts) {
@@ -146,9 +151,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                     ) {
                         Text("Menu", style = textStyleRobotoMediumSp16)
                         Spacer(modifier = Modifier.height(24.dp))
-                        LabelButtonSheet(Icons.Default.AccountCircle, "My account") {
-                            homeViewModel.channel.trySend(HomeIntents.HideButtonSheetAccount)
-                        }
+                        LabelButtonSheet(Icons.Default.AccountCircle, "My account") {}
                         Spacer(modifier = Modifier.height(16.dp))
                         LabelButtonSheet(Icons.Default.Refresh, "Order history") {
                             homeViewModel.channel.trySend(HomeIntents.HideButtonSheet)

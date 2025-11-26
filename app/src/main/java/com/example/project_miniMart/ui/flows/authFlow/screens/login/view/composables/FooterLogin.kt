@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.minimartapp.ui.widgets.DividerComposeView
-import com.example.project_miniMart.ui.flows.authFlow.navigation.DestinationRegister
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoMediumSp14
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoRegularSp14
+import com.example.project_miniMart.ui.flows.authFlow.navigation.DestinationRegister
 import com.example.project_miniMart.utils.uiManager.AuthEventManager
 import com.example.project_miniMart.utils.uiManager.events.AuthEvent
 

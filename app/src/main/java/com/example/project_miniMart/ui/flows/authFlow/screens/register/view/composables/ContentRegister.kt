@@ -16,8 +16,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.minimartapp.ui.widgets.InputTextFieldComposeView
 import com.example.minimartapp.ui.widgets.LabelsValidations
-import com.example.project_miniMart.ui.flows.authFlow.screens.register.model.RegisterStates
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoMediumSp14
+import com.example.project_miniMart.ui.flows.authFlow.screens.register.model.RegisterStates
 
 @Composable
 fun ContentRegister(

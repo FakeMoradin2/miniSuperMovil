@@ -6,6 +6,7 @@ import com.example.minimartapp.ui.widgets.TypeAlert
 import com.example.project_miniMart.datasource.local.preferences.DataStorePref
 import com.example.project_miniMart.datasource.network.requests.LoginRequest
 import com.example.project_miniMart.domain.models.UserDataDomain
+import com.example.project_miniMart.domain.models.UserModelDomain
 import com.example.project_miniMart.domain.repositories.LoginTask
 import com.example.project_miniMart.ui.flows.authFlow.screens.login.intent.LoginIntents
 import com.example.project_miniMart.ui.flows.authFlow.screens.login.model.LoginStates
@@ -100,10 +101,9 @@ class LoginModel @Inject constructor(
         )
     }
 
-    private fun saveDataUser(userModel: UserDataDomain){
+    private fun saveDataUser(userModel: UserModelDomain){
         CoroutineScope(Dispatchers.IO).launch {
             dataStorePref.saveDataUser(
-                email = userModel.email,
                 userName = userModel.userName,
             )
         }
