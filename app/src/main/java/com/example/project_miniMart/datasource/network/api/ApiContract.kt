@@ -8,6 +8,7 @@ import com.example.project_miniMart.datasource.network.responses.product.Product
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 
 interface ApiContract {
 
@@ -23,4 +24,6 @@ interface ApiContract {
 
     @GET("productos/listar.php")
     suspend fun fetchProducts(): ProductResponseApi
+
+
 }

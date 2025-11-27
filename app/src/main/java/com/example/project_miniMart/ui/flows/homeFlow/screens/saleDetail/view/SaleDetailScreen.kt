@@ -18,7 +18,11 @@ import com.example.project_miniMart.widgets.heder.NavigationHeaderComposeView
 
 
 @Composable
-fun SaleDetailScreen(saleId: Int, saleDetailViewModel: SaleDetailViewModel = hiltViewModel()) {
+fun SaleDetailScreen(
+    saleId: Int,
+    saleDetailViewModel: SaleDetailViewModel = hiltViewModel(),
+    onback: () -> Unit,
+) {
     val state by saleDetailViewModel.state.collectAsStateWithLifecycle()
     saleDetailViewModel.channel.trySend(SaleDetailIntents.GetDataOfVoucher(saleId))
 
@@ -32,11 +36,11 @@ fun SaleDetailScreen(saleId: Int, saleDetailViewModel: SaleDetailViewModel = hil
                 "Sale Details",
                 "View all information about this sale."
             ) {
-
+                onback()
             }
 
             VoucherContent(state.dataVoucher) {
-
+                saleDetailViewModel.channel.trySend(SaleDetailIntents.FinishFlow)
             }
         }
     }

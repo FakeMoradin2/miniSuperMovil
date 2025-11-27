@@ -8,6 +8,8 @@ import com.example.project_miniMart.ui.flows.homeFlow.screens.saleDetail.model.S
 import com.example.project_miniMart.ui.flows.homeFlow.screens.voucher.intent.VoucherIntents
 import com.example.project_miniMart.ui.flows.homeFlow.screens.voucher.model.VoucherStates
 import com.example.project_miniMart.utils.handleRequest
+import com.example.project_miniMart.utils.uiManager.HomeEventManager
+import com.example.project_miniMart.utils.uiManager.events.HomeEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,11 +36,23 @@ class SaleDetailViewModel @Inject constructor(private val homeTask: HomeTask) : 
                 .collect {
                     when (it) {
                         is SaleDetailIntents.GetDataOfVoucher -> setupDataVoucher(it.saleId)
+                        SaleDetailIntents.FinishFlow -> finishFlow()
                     }
                 }
         }
     }
 
+    private suspend fun finishFlow(){
+        handleRequest(
+            call = {homeTask.deleteAllCar()},
+            onSuccess = {
+                HomeEventManager.triggerEvent(HomeEvent.RefreshApp)
+            },
+            onError = {
+                // TODO: mostrar alerta de que no se pudo eliminar el carrito y regresar al home
+            }
+        )
+    }
     private suspend fun setupDataVoucher(saleInt: Int){
         handleRequest(
             call = {homeTask.getSaleWithItemsById(saleInt)},
