@@ -151,7 +151,9 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                     ) {
                         Text("Menu", style = textStyleRobotoMediumSp16)
                         Spacer(modifier = Modifier.height(24.dp))
-                        LabelButtonSheet(Icons.Default.AccountCircle, "My account") {}
+                        LabelButtonSheet(Icons.Default.AccountCircle, "My account") {
+
+                        }
                         Spacer(modifier = Modifier.height(16.dp))
                         LabelButtonSheet(Icons.Default.Refresh, "Order history") {
                             homeViewModel.channel.trySend(HomeIntents.HideButtonSheet)
