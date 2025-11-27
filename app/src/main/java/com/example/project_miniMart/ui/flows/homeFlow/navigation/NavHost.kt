@@ -35,10 +35,7 @@ fun NavHostHome(navController: NavHostController) {
 
         composable <DestinationSaleDetail> {
             val destination = it.toRoute<DestinationSaleDetail>()
-            SaleDetailScreen(
-                saleId = destination.saleId,
-                onback = { navController.popBackStack() }
-            )
+            SaleDetailScreen(destination.saleId, onback = {navController.popBackStack()})
         }
     }
 }
