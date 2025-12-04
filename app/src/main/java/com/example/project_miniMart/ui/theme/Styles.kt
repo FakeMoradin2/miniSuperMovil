@@ -9,6 +9,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
+import com.example.project_miniMart.ui.theme.DimensSp.Sp12
+import com.example.project_miniMart.ui.theme.DimensSp.Sp16
+import com.example.project_miniMart.ui.theme.DimensSp.Sp24
 
 object Styles {
     val textStyleRobotoMediumSp12 = TextStyle(
@@ -23,6 +26,21 @@ object Styles {
         fontFamily = robotoFontFamily,
         fontWeight = FontWeight.Bold
     )
+
+    val textStyleRobotoBoldSp16= TextStyle(
+        fontSize = Sp16,
+        lineHeight = Sp24,
+        fontFamily = robotoFontFamily,
+        fontWeight = FontWeight.Bold
+    )
+
+    val textStyleRobotoRegularSp12= TextStyle(
+        fontSize = Sp12,
+        lineHeight = Sp16,
+        fontFamily = robotoFontFamily,
+        fontWeight = FontWeight.Normal
+    )
+
     val textStyleRobotoRegularSp16 = TextStyle(
         fontSize = 16.sp,
         lineHeight = 16.sp,
@@ -179,14 +197,14 @@ object Styles {
 
 
     var roboto14MediumChipChecked = TextStyle(
-        fontSize = DimensSp.Sp10,
+        fontSize = DimensSp.Sp9,
         fontWeight = FontWeight.Companion.Medium,
         fontFamily = robotoFontFamily,
         lineHeight = DimensSp.Sp16,
         color = Color.White
     )
     var roboto14MediumChipUnChecked = TextStyle(
-        fontSize = DimensSp.Sp10,
+        fontSize = DimensSp.Sp9,
         fontWeight = FontWeight.Companion.Medium,
         fontFamily = robotoFontFamily,
         lineHeight = DimensSp.Sp16,

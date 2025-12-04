@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MiniMart</string>
     <string name="unknow_host_exepcion">Error en la red!!</string>
+    <string name="unknow_exepcion">Database connection error.</string>
+    <string name="add_exepcion">Unable to add the product due to a database issue. Please try again later.</string>
+    <string name="add_success">The product was added successfully.</string>
     <string name="error_exepcion">"Incorrect username or password"</string>
     <string name="handleRequest_error">handleRequest</string>
     <string name="empty_list">empty list</string>
@@ -15,5 +18,7 @@
     <string name="error_recovery">Email not found. Please check and try again.</string>
     <string name="success_recovery">Your password has been sent to your email address.</string>
     <string name="error_fetch_products">No products were found. Please try again later.</string>
-
+    <string name="product_deleted_successfully">Product deleted successfully</string>
+    <string name="delete_item">Are you sure you want to delete this item?</string>
+    <string name="action_share">Share</string>
 </resources>

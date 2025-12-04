@@ -1,7 +1,6 @@
 package com.example.project_miniMart.utils.uiManager.events
 
 import androidx.annotation.StringRes
-import com.example.project_miniMart.domain.models.UserDataDomain
 
 
 sealed class AuthEvent {
@@ -10,5 +9,8 @@ sealed class AuthEvent {
     data object GoToHome : AuthEvent()
 }
 sealed class HomeEvent {
+    data object RefreshApp : HomeEvent()
     data object FinishApp : HomeEvent()
+    data class ShowSnackBar(@StringRes val message: Int): HomeEvent()
+    data class NavigateTo(val route: Any) : HomeEvent()
 }

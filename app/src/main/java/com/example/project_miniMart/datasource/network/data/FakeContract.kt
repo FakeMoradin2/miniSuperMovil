@@ -28,7 +28,7 @@ class FakeContract @Inject constructor() {
     }
 
     //----------- home
-    suspend fun fetchAllProducts(): ProductsResponse {
+    suspend fun fetchAllCategories(): ProductsResponse {
         delay(someTime())
         return getAllCategoriesRequest()
     }

@@ -1,24 +1,26 @@
 package com.example.project_miniMart.domain.mappers
 
 import com.example.project_miniMart.datasource.network.responses.ProductApi
+import com.example.project_miniMart.datasource.network.responses.product.ProductModelResponse
 import com.example.project_miniMart.domain.models.ProductDomain
 
 abstract class ProductsDtoToMapper {
     companion object{
-        private fun fromDtoToDomain(productApi: ProductApi): ProductDomain {
+        private fun fromDtoToDomain(productApi: ProductModelResponse): ProductDomain {
             return ProductDomain(
                 id = productApi.id,
-                name = productApi.name,
+                name = productApi.productName,
                 price = productApi.price,
                 stock = productApi.stock,
-                category = productApi.category
+                category = productApi.category,
+                image = productApi.image
             )
         }
 
-        fun fromDtoToDomainList(response: List<ProductApi>): List<ProductDomain> {
-            return response.map {
+        fun fromDtoToDomainList(response: List<ProductModelResponse>? ): List<ProductDomain> {
+            return response?.map {
                 fromDtoToDomain(it)
-            }
+            } ?: emptyList()
         }
     }
 }

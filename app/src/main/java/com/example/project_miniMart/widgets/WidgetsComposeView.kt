@@ -63,6 +63,9 @@ import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoMediumSp16
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoRegularSp10
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoThinSp12
 import com.example.project_miniMart.ui.flows.authFlow.screens.register.model.RegisterStates
+import com.example.project_miniMart.ui.theme.AccentDarkCancel
+import com.example.project_miniMart.ui.theme.DpSizes.Dp16
+import com.example.project_miniMart.ui.theme.Styles.roboto14Regular
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoMediumSp12
 import com.example.project_miniMart.widgets.heder.HeaderComposeView
 import com.example.project_miniMart.widgets.listCategories.ButtonPill
@@ -77,12 +80,13 @@ sealed class TypesButtons {
 @Composable
 fun TopBarComposeView(
     title: String,
+    description: String,
     onClickBack: (() -> Unit)? = null,
 ) {
 
     HeaderComposeView(modifier = Modifier.height(64.dp)) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -94,7 +98,11 @@ fun TopBarComposeView(
                 }
             }
             Spacer(modifier = Modifier.width(Dp8))
-            Text(title, style = roboto16Medium, color = Color.White)
+            Column(verticalArrangement = Arrangement.Center) {
+                Text(title, style = roboto16Medium, color = Color.White)
+                Spacer(modifier = Modifier.height(Dp8))
+                Text(description, style = roboto14Regular, color = Color.White)
+            }
         }
     }
 }
@@ -327,10 +335,15 @@ fun InfoDialog(
     title: String,
     message: String,
     typeAlert: TypeAlert,
+    onCancel:(() -> Unit)? = null,
 ) {
     AlertDialog(
         containerColor = Color.White,
         onDismissRequest = { onDismiss() },
+        dismissButton = {
+            if(onCancel != null)
+                ButtonPill(label = "Cancel", color = AccentDarkCancel){onCancel.invoke()}
+        },
         confirmButton = {
             ButtonPill(label = "Accept"){onDismiss()}
         },

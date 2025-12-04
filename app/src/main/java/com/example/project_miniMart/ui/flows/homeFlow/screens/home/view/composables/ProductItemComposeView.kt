@@ -22,19 +22,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.project_miniMart.R
+import com.example.project_miniMart.datasource.local.bd.entities.ShoppingEntity
 import com.example.project_miniMart.domain.models.ProductDomain
 import com.example.project_miniMart.ui.theme.AccentDark
 import com.example.project_miniMart.ui.theme.Styles.roboto10Medium
 import com.example.project_miniMart.ui.theme.Styles.textStyleRobotoMediumSp12
 import com.example.project_miniMart.utils.extensions.formatMoney
+import com.example.project_miniMart.utils.extensions.toEntity
 import com.example.project_miniMart.widgets.listCategories.ButtonPill
 
 
 @Composable
-fun ProductItemComposeView(productDomain: ProductDomain ) {
+fun ProductItemComposeView(productDomain: ProductDomain, addProduct: (ShoppingEntity) -> Unit) {
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -63,7 +66,7 @@ fun ProductItemComposeView(productDomain: ProductDomain ) {
 
             )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(productDomain.name, style = textStyleRobotoMediumSp12)
+            Text(productDomain.name, style = textStyleRobotoMediumSp12, textAlign = TextAlign.Center)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -84,7 +87,9 @@ fun ProductItemComposeView(productDomain: ProductDomain ) {
                 Spacer(modifier = Modifier.weight(1f))
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Spacer(modifier = Modifier.weight(1f))
-                    ButtonPill("Add", isEnable = productDomain.stock >= 1) { }
+                    ButtonPill("Add", isEnable = productDomain.stock >= 1) {
+                        addProduct(productDomain.toEntity())
+                    }
                 }
             }
         }
